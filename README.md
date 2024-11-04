@@ -22,13 +22,9 @@
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-## Description
-
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
 ## 백엔드 문서 보는법 
-터미널에서 C:\Users\samsung\Desktop\NestJsBackEnd\back-develop> 이 경로로 이동한 다음 
-
+터미널에서 package.json으로 이동한 다음 
 ```bash
 $ npm run start:dev
 ```
