@@ -30,12 +30,12 @@
 터미널에서 C:\Users\samsung\Desktop\NestJsBackEnd\back-develop> 이 경로로 이동한 다음 
 
 ```bash
-$ npm run start:dev입력
+$ npm run start:dev
 ```
-그리고 주소창에 localhost:3001/api로 이동 
+그리고 주소창에 localhost:3001/api 입력 
 ## Compile and run the project
 
-```bash
+<!-- ```bash
 # development
 $ npm run start
 
@@ -97,4 +97,4 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 
 ## License
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE). -->
