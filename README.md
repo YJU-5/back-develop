@@ -26,12 +26,13 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-## Project setup
+## 백엔드 문서 보는법 
+터미널에서 C:\Users\samsung\Desktop\NestJsBackEnd\back-develop> 이 경로로 이동한 다음 
 
 ```bash
-$ npm install
+$ npm run start:dev입력
 ```
-
+그리고 주소창에 localhost:3001/api로 이동 
 ## Compile and run the project
 
 ```bash
