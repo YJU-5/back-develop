@@ -25,6 +25,9 @@
 
 # BackEnd 개발 레퍼지토리
 
+## 구현해야하는거 
+- Swagger Dto 설정 및 DB 구현 
+
 <!-- ## Description
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
