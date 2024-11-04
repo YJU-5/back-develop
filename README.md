@@ -32,7 +32,7 @@
 ```bash
 $ npm run start:dev
 ```
-그리고 주소창에 localhost:3001/api 입력 
+그리고 브라우저 주소창에 localhost:3001/api 입력 
 ## Compile and run the project
 
 <!-- ```bash
