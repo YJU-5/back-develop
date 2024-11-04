@@ -11,6 +11,7 @@ import { UserModule } from './user/user.module';
 import { TeamMember } from './team-members/entities/team-member.entity';
 import { LocalSemester } from './local-semester/entities/local-semester.entity';
 import { Board } from './board/entities/board.entity';
+import { CommentModule } from './comment/comment.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { Board } from './board/entities/board.entity';
     BoardModule,
     AuthModule,
     UserModule,
+    CommentModule,
   ],
 })
 export class AppModule {}

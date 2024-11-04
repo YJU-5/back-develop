@@ -27,6 +27,16 @@
 
 ## 구현해야하는거 
 - Swagger Dto 설정 및 DB 구현 
+- 조원소개 DTO는 1학기때 했던거 참고 
+- 현지학기소개는 title, content, image 
+- 게시판
+  - 페이징, 댓글 
+
+### 댓글기능 
+- postId 참조 
+- post에 Id로 Get을 할 시에 거기에 작성된 comment 가지고 오기
+  - post GET 하면 comment테이블에 postId 가 있는 녀석들을 배열로 가지고오기 
+- comment 테이블에 postId를 넣어서 참조하게 하기 
 
 <!-- ## Description
 
