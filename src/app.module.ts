@@ -12,6 +12,8 @@ import { TeamMember } from './team-members/entities/team-member.entity';
 import { LocalSemester } from './local-semester/entities/local-semester.entity';
 import { Board } from './board/entities/board.entity';
 import { CommentModule } from './comment/comment.module';
+import { Comment } from './comment/entities/comment.entity';
+import { User } from './user/entities/user.entity';
 
 @Module({
   imports: [
@@ -28,7 +30,7 @@ import { CommentModule } from './comment/comment.module';
         username: configService.get<string>('DB_USERNAME'),
         password: configService.get<string>('DB_PASSWORD'),
         database: configService.get<string>('DB_NAME'),
-        entities: [TeamMember, LocalSemester, Board], // 엔티티를 여기에 추가
+        entities: [TeamMember, LocalSemester, Board, Comment, User], // 엔티티를 여기에 추가
         synchronize: true,
       }),
     }),
@@ -39,5 +41,7 @@ import { CommentModule } from './comment/comment.module';
     UserModule,
     CommentModule,
   ],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}

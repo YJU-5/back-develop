@@ -1,5 +1,6 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { ApiProperty } from '@nestjs/swagger';
+import { IsString } from 'class-validator';
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 @Entity()
 export class CreateUserDto {
@@ -12,6 +13,7 @@ export class CreateUserDto {
     description: '가입유저이름',
     example: '김씨',
   })
+  @IsString()
   @Column() // 테이블의 열을 나타냄 // user로그인 구현 필요
   name: string;
 
@@ -21,6 +23,7 @@ export class CreateUserDto {
     description: '가입이메일',
     example: 'gudtjs1004s@naver.com',
   })
+  @IsString()
   @Column()
   email: string;
 
@@ -30,6 +33,7 @@ export class CreateUserDto {
     description: '가입유저 패스워드',
     example: 'gudts219!',
   })
+  @IsString()
   @Column()
   password: string;
 
