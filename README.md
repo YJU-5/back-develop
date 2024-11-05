@@ -38,6 +38,8 @@
   - post GET 하면 comment테이블에 postId 가 있는 녀석들을 배열로 가지고오기 
 - comment 테이블에 postId를 넣어서 참조하게 하기 
 
+###### Tue Nov 5 11:49:19 KST 2024
+- 할일 board dto and swagger
 <!-- ## Description
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
