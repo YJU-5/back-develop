@@ -1,11 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Column, OneToMany, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { Comment } from 'src/comment/entities/comment.entity';
+import { IsString } from 'class-validator';
 
 @Entity()
 export class CreateBoardDto {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @ApiProperty({
     required: true,
@@ -14,6 +15,7 @@ export class CreateBoardDto {
     example: '제목',
   })
   @Column({ length: 25 })
+  @IsString()
   title: string;
 
   @ApiProperty({
@@ -23,6 +25,7 @@ export class CreateBoardDto {
     example: '~내용',
   })
   @Column()
+  @IsString()
   content: string;
 
   @Column({ nullable: true })

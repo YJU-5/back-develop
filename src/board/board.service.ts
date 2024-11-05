@@ -12,23 +12,39 @@ export class BoardService {
     private readonly boardRepository: Repository<Board>,
   ) {}
 
-  create(createBoardDto: CreateBoardDto) {
-    return 'This action adds a new board';
+  //포스트 생성
+  async create(createBoardDto: CreateBoardDto): Promise<Board> {
+    const newBoardPost = this.boardRepository.create({
+      title: createBoardDto.title,
+      content: createBoardDto.content,
+    });
+    const saveBoardPost = await this.boardRepository.save(newBoardPost);
+    return saveBoardPost;
   }
 
-  findAll() {
-    return `This action returns all board`;
+  // 전체 post 불러오기
+  async findAll(): Promise<Board[]> {
+    const BoardPostAllList = await this.boardRepository.find();
+    console.log(BoardPostAllList);
+    return BoardPostAllList;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} board`;
+  //ID로 포스트 불러오기
+  async findOne(id: string): Promise<Board> {
+    const BoardPostByIdList = await this.boardRepository.findOneBy({ id: id });
+    console.log(BoardPostByIdList);
+    return BoardPostByIdList;
   }
 
-  update(id: number, updateBoardDto: UpdateBoardDto) {
-    return `This action updates a #${id} board`;
+  // 업데이트
+  async update(id: string, updateBoardDto: UpdateBoardDto): Promise<Board> {
+    await this.boardRepository.update(id, updateBoardDto);
+    const updateBoardPosts = await this.boardRepository.findOneBy({ id });
+    return updateBoardPosts;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} board`;
+  // 삭제
+  async remove(id: string): Promise<void> {
+    await this.boardRepository.delete({ id });
   }
 }

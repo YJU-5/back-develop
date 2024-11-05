@@ -4,8 +4,8 @@ import { Comment } from 'src/comment/entities/comment.entity';
 
 @Entity()
 export class Board {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({ length: 25 })
   title: string;
