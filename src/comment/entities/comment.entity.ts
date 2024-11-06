@@ -1,15 +1,22 @@
-import { Column, Entity, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import {
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  JoinColumn,
+} from 'typeorm';
 import { Board } from 'src/board/entities/board.entity';
 
 @Entity()
 export class Comment {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   content: string;
 
   @ManyToOne(() => Board, (board) => board.comments)
+  @JoinColumn({ name: 'postId' })
   postId: Board;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })

@@ -4,16 +4,27 @@ import { UpdateCommentDto } from './dto/update-comment.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Comment } from './entities/comment.entity';
+import { Board } from 'src/board/entities/board.entity';
 
 @Injectable()
 export class CommentService {
   constructor(
     @InjectRepository(Comment)
     private readonly commentRepository: Repository<Comment>,
+    @InjectRepository(Board)
+    private readonly boardRepository: Repository<Board>,
   ) {}
 
-  create(createCommentDto: CreateCommentDto) {
-    return 'This action adds a new comment';
+  // 댓글 생성
+  async create(postId: string, createCommentDto: CreateCommentDto) {
+    const board = await this.boardRepository.findOneBy({ id: postId });
+    console.log(board);
+    const newComment = this.commentRepository.create({
+      postId: board,
+      content: createCommentDto.content,
+    });
+    const saveNewComment = await this.commentRepository.save(newComment);
+    return saveNewComment;
   }
 
   findAll() {

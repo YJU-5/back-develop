@@ -31,7 +31,10 @@ export class BoardService {
 
   //ID로 포스트 불러오기
   async findOne(id: string): Promise<Board> {
-    const BoardPostByIdList = await this.boardRepository.findOneBy({ id: id });
+    const BoardPostByIdList = await this.boardRepository.findOne({
+      where: { id },
+      relations: ['comments'], // 댓글내용 []형식으로 불러오기
+    });
     console.log(BoardPostByIdList);
     return BoardPostByIdList;
   }

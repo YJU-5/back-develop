@@ -34,9 +34,10 @@
 
 # 구현해볼까?? 
 - post에 userId연동해서 유저가 작성한 포스트들 볼 수 있게 하기 
+- 상황에 맞게 정확한 오류 
 
 # 구현 순서 
-- 회원가입 -> 로그인 
+- 회원가입 -> 로그인 (Prototype)
 - 이미지 AWS
 - 게시판 -> 페이징
 
@@ -46,8 +47,8 @@
   - post GET 하면 comment테이블에 postId 가 있는 녀석들을 배열로 가지고오기 
 - comment 테이블에 postId를 넣어서 참조하게 하기 
 
-###### Tue Nov 5 11:49:19 KST 2024
-- 할일 board dto and swagger
+# 할 일
+- board의 CRUD는 완료함 comment의 dto 및 컨트롤러 서비스 작성
 <!-- ## Description
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
