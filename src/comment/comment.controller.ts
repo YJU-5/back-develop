@@ -23,22 +23,22 @@ export class CommentController {
     return this.commentService.create(postId, createCommentDto);
   }
 
-  @ApiOperationDecorator('댓글 Get', '# 댓글 Get', 200, '성공적으로 댓글 Get')
-  @Get()
-  findAll() {
-    return this.commentService.findAll();
-  }
+  // @ApiOperationDecorator('댓글 Get', '# 댓글 Get', 200, '성공적으로 댓글 Get')
+  // @Get()
+  // findAll() {
+  //   return this.commentService.findAll();
+  // }
 
-  @ApiOperationDecorator(
-    '댓글 Get by ID',
-    '# 댓글 Get by ID',
-    200,
-    '성공적으로 댓글 Get by ID',
-  )
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.commentService.findOne(+id);
-  }
+  // @ApiOperationDecorator(
+  //   '댓글 Get by ID',
+  //   '# 댓글 Get by ID',
+  //   200,
+  //   '성공적으로 댓글 Get by ID',
+  // )
+  // @Get(':id')
+  // findOne(@Param('id') id: string) {
+  //   return this.commentService.findOne(+id);
+  // }
 
   @ApiOperationDecorator(
     '댓글 Update',
@@ -51,14 +51,14 @@ export class CommentController {
     return this.commentService.update(+id, updateCommentDto);
   }
 
-  @ApiOperationDecorator(
-    '댓글 Delete',
-    '# 댓글 Delete',
-    200,
-    '성공적으로 댓글 Delete',
-  )
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.commentService.remove(+id);
-  }
+  // @ApiOperationDecorator(
+  //   '댓글 Delete',
+  //   '# 댓글 Delete',
+  //   200,
+  //   '성공적으로 댓글 Delete',
+  // )
+  // @Delete(':id')
+  // remove(@Param('id') id: string) {
+  //   return this.commentService.remove(+id);
+  // }
 }

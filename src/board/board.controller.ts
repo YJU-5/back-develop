@@ -1,12 +1,28 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseInterceptors,
+  UploadedFile,
+} from '@nestjs/common';
 import { BoardService } from './board.service';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { UpdateBoardDto } from './dto/update-board.dto';
 import { ApiOperationDecorator } from 'src/decorator/api.operration.decorator';
 import { Board } from './entities/board.entity';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { Express } from 'express';
+import { S3Service } from 'src/s3/s3.service';
 @Controller('board')
 export class BoardController {
-  constructor(private readonly boardService: BoardService) {}
+  constructor(
+    private readonly boardService: BoardService,
+    private readonly s3Service: S3Service,
+  ) {}
 
   // post 생성
   @ApiOperationDecorator(
@@ -18,6 +34,14 @@ export class BoardController {
   @Post()
   create(@Body() createBoardDto: CreateBoardDto): Promise<Board> {
     return this.boardService.create(createBoardDto);
+  }
+
+  // 이미지 업로드
+  @Post('image')
+  @UseInterceptors(FileInterceptor('file'))
+  async uploadFile(@UploadedFile() file: Express.Multer.File) {
+    const uploadedUrl = await this.s3Service.uploadFile(file);
+    return { url: uploadedUrl };
   }
 
   // 모든 posts 가져오기

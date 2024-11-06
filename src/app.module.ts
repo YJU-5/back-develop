@@ -14,6 +14,7 @@ import { Board } from './board/entities/board.entity';
 import { CommentModule } from './comment/comment.module';
 import { Comment } from './comment/entities/comment.entity';
 import { User } from './user/entities/user.entity';
+import { S3Module } from './s3/s3.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { User } from './user/entities/user.entity';
     AuthModule,
     UserModule,
     CommentModule,
+    S3Module,
   ],
   controllers: [],
   providers: [],

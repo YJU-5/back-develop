@@ -30,25 +30,23 @@
 - 조원소개 DTO는 1학기때 했던거 참고 
 - 현지학기소개는 title, content, image 
 - 게시판
-  - 페이징, 댓글 
+  - 페이징, 댓글(Prototype) 
 
 # 구현해볼까?? 
 - post에 userId연동해서 유저가 작성한 포스트들 볼 수 있게 하기 
 - 상황에 맞게 정확한 오류 
 
 # 구현 순서 
-- 회원가입 -> 로그인 (Prototype)
+- 회원가입(Prototype) -> 로그인 (Prototype)
 - 이미지 AWS
 - 게시판 -> 페이징
 
-### 댓글기능 
-- postId 참조 
-- post에 Id로 Get을 할 시에 거기에 작성된 comment 가지고 오기
-  - post GET 하면 comment테이블에 postId 가 있는 녀석들을 배열로 가지고오기 
-- comment 테이블에 postId를 넣어서 참조하게 하기 
+# S3 이미지 업로드 
+- 이미지의 body FormData로 간다
 
 # 할 일
-- board의 CRUD는 완료함 comment의 dto 및 컨트롤러 서비스 작성
+- 페이지네이션 물어보기 
+- aws image 원리 물어보기
 <!-- ## Description
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
