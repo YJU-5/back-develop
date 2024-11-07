@@ -46,7 +46,9 @@
 
 # 할 일
 - 페이지네이션 물어보기 
-- aws image 원리 물어보기
+
+# 개선점 
+- 데코레이터에 swagger를 작성하여 모두 통일되게 ApiBody를 사용하여
 <!-- ## Description
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.

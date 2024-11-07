@@ -6,7 +6,7 @@ import {
   Patch,
   Param,
   Delete,
-  UseInterceptors,
+  UploadedFiles,
   UploadedFile,
 } from '@nestjs/common';
 import { BoardService } from './board.service';
@@ -14,9 +14,9 @@ import { CreateBoardDto } from './dto/create-board.dto';
 import { UpdateBoardDto } from './dto/update-board.dto';
 import { ApiOperationDecorator } from 'src/decorator/api.operration.decorator';
 import { Board } from './entities/board.entity';
-import { FileInterceptor } from '@nestjs/platform-express';
 import { Express } from 'express';
 import { S3Service } from 'src/s3/s3.service';
+import { ApiFile } from 'src/decorator/api.file.decorator';
 @Controller('board')
 export class BoardController {
   constructor(
@@ -31,17 +31,33 @@ export class BoardController {
     201,
     '성공적으로 게시판 Post',
   )
-  @Post()
-  create(@Body() createBoardDto: CreateBoardDto): Promise<Board> {
-    return this.boardService.create(createBoardDto);
-  }
+  // @Post()
+  // async create(@Body() createBoardDto: CreateBoardDto): Promise<Board> {
+  //   return this.boardService.create(createBoardDto);
+  // }
 
-  // 이미지 업로드
-  @Post('image')
-  @UseInterceptors(FileInterceptor('file'))
-  async uploadFile(@UploadedFile() file: Express.Multer.File) {
-    const uploadedUrl = await this.s3Service.uploadFile(file);
-    return { url: uploadedUrl };
+  // 이미지들 업로드
+  @Post('')
+  @ApiFile('file')
+  async uploadFile(
+    @Body() CreateBoardDto: CreateBoardDto, // 여기다 작업해보기
+    @UploadedFiles() files: Express.Multer.File[],
+    @UploadedFile() file: Express.Multer.File,
+  ): Promise<any> {
+    // array가 될 uploadedUrls
+    let uploadedUrls: string[];
+    // 파일이 하나인경우
+    if (file) {
+      uploadedUrls = [await this.s3Service.uploadFile(file)];
+      // 파일이 여러개인경우
+    } else if (files && files.length > 0) {
+      uploadedUrls = await Promise.all(
+        files.map((file) => this.s3Service.uploadFile(file)),
+      );
+    } else {
+      uploadedUrls = [];
+    }
+    return this.boardService.create(CreateBoardDto, uploadedUrls);
   }
 
   // 모든 posts 가져오기

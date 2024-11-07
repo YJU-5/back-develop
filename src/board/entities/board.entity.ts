@@ -13,8 +13,8 @@ export class Board {
   @Column()
   content: string;
 
-  @Column({ nullable: true })
-  imageUrl: string;
+  @Column('simple-array', { nullable: true })
+  imageUrl: string[]; // 이미지 URL 배열로 변경
 
   // 첫 번째 매개변수 (연결할 엔티티 지정)
   // 두 번째 연결된 댓글을 어떻게 가져올 것인지 정의

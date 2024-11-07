@@ -25,8 +25,6 @@ export class S3Service {
   }
 
   async uploadFile(file: Express.Multer.File): Promise<string> {
-    console.log(process.env.AWS_ACCESS_KEY_ID);
-    console.log(process.env.AWS_SECRET_ACCESS_KEY);
     const fileKey = `${uuidv4()}-${file.originalname}`;
     const params = {
       Bucket: this.bucketName,

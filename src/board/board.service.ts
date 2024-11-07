@@ -12,11 +12,15 @@ export class BoardService {
     private readonly boardRepository: Repository<Board>,
   ) {}
 
-  //포스트 생성
-  async create(createBoardDto: CreateBoardDto): Promise<Board> {
+  // 포트스 생성
+  async create(
+    createBoardDto: CreateBoardDto,
+    uploadedUrl: string[],
+  ): Promise<Board> {
     const newBoardPost = this.boardRepository.create({
       title: createBoardDto.title,
       content: createBoardDto.content,
+      imageUrl: uploadedUrl,
     });
     const saveBoardPost = await this.boardRepository.save(newBoardPost);
     return saveBoardPost;
