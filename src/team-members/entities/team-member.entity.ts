@@ -2,8 +2,8 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class TeamMember {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({ length: 25 })
   title: string;
@@ -11,6 +11,6 @@ export class TeamMember {
   @Column()
   content: string;
 
-  @Column({ nullable: true })
-  imageUrl: string;
+  @Column('simple-array', { nullable: true })
+  imageUrl: string[];
 }

@@ -4,12 +4,14 @@ import { UpdateBoardDto } from './dto/update-board.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Board } from './entities/board.entity';
+import { S3Service } from 'src/s3/s3.service';
 
 @Injectable()
 export class BoardService {
   constructor(
     @InjectRepository(Board)
     private readonly boardRepository: Repository<Board>,
+    private readonly s3Service: S3Service,
   ) {}
 
   // 포스트 생성
@@ -39,14 +41,24 @@ export class BoardService {
       where: { id },
       relations: ['comments'], // 댓글내용 []형식으로 불러오기
     });
-    console.log(BoardPostByIdList);
     return BoardPostByIdList;
   }
 
   // 업데이트
-  async update(id: string, updateBoardDto: UpdateBoardDto): Promise<Board> {
-    await this.boardRepository.update(id, updateBoardDto);
+  async update(
+    id: string,
+    updateBoardDto: UpdateBoardDto,
+    uploadedUrl: string[],
+  ): Promise<Board> {
+    const BoardPost = await this.boardRepository.findOneBy({ id });
+    console.log(BoardPost);
+    await this.s3Service.deleteFile(BoardPost.imageUrl);
     const updateBoardPosts = await this.boardRepository.findOneBy({ id });
+    await this.boardRepository.update(id, {
+      title: updateBoardDto.title,
+      content: updateBoardDto.content,
+      imageUrl: uploadedUrl,
+    });
     return updateBoardPosts;
   }
 

@@ -3,6 +3,7 @@ import {
   S3Client,
   PutObjectCommand,
   ObjectCannedACL,
+  DeleteObjectCommand,
 } from '@aws-sdk/client-s3';
 import { v4 as uuidv4 } from 'uuid';
 import * as dotenv from 'dotenv';
@@ -42,5 +43,24 @@ export class S3Service {
     } catch (error) {
       throw new Error(`Failed to upload file: ${error.message}`);
     }
+  }
+  // 기존 이미지 삭제
+  async deleteFile(fileUrls: string[]): Promise<void> {
+    const deletePromises = fileUrls.map(async (fileUrl) => {
+      console.log(fileUrl);
+      const fileName = fileUrl.split(`${this.bucketName}/`)[0]; // URL에서 파일명 추출
+      const command = new DeleteObjectCommand({
+        Bucket: this.bucketName,
+        Key: fileName,
+      });
+      try {
+        await this.s3.send(command);
+        console.log(`Deleted File :${fileName}`);
+      } catch (error) {
+        console.error(`Failed to delete file ${fileName}:`, error.message);
+        throw new Error(`Failed to delete file ${fileName}: ${error.message}`);
+      }
+    });
+    await Promise.all(deletePromises); // 모든 삭제 명령이 완료될 때까지 대기
   }
 }
