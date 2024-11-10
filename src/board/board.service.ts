@@ -12,7 +12,7 @@ export class BoardService {
     private readonly boardRepository: Repository<Board>,
   ) {}
 
-  // 포트스 생성
+  // 포스트 생성
   async create(
     createBoardDto: CreateBoardDto,
     uploadedUrl: string[],
@@ -53,5 +53,11 @@ export class BoardService {
   // 삭제
   async remove(id: string): Promise<void> {
     await this.boardRepository.delete({ id });
+  }
+
+  // 아이디로 포스트 찾기
+  async findBoardById(postId: string): Promise<Board> {
+    const board = await this.boardRepository.findOneBy({ id: postId });
+    return board;
   }
 }

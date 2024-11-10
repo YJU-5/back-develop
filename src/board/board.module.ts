@@ -9,6 +9,6 @@ import { S3Module } from 'src/s3/s3.module';
   imports: [TypeOrmModule.forFeature([Board]), S3Module],
   controllers: [BoardController],
   providers: [BoardService],
-  exports: [TypeOrmModule],
+  exports: [BoardService],
 })
 export class BoardModule {}
