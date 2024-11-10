@@ -15,13 +15,13 @@ export class CommentController {
     201,
     '성공적으로 댓글 Post',
   )
-  @Post(':id')
-  create(
-    @Param('id') postId: string,
-    @Body() createCommentDto: CreateCommentDto,
-  ) {
-    return this.commentService.create(postId, createCommentDto);
-  }
+  // @Post(':id')
+  // create(
+  //   @Param('id') postId: string,
+  //   @Body() createCommentDto: CreateCommentDto,
+  // ) {
+  //   return this.commentService.create(postId, createCommentDto);
+  // }
 
   // @ApiOperationDecorator('댓글 Get', '# 댓글 Get', 200, '성공적으로 댓글 Get')
   // @Get()

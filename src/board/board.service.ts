@@ -1,57 +1,25 @@
+// board.service.ts
 import { Injectable } from '@nestjs/common';
-import { CreateBoardDto } from './dto/create-board.dto';
-import { UpdateBoardDto } from './dto/update-board.dto';
+import { BaseService } from 'src/base/base.service';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { Board } from './entities/board.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
-export class BoardService {
+export class BoardService extends BaseService<Board> {
   constructor(
     @InjectRepository(Board)
     private readonly boardRepository: Repository<Board>,
-  ) {}
-
-  // 포트스 생성
-  async create(
-    createBoardDto: CreateBoardDto,
-    uploadedUrl: string[],
-  ): Promise<Board> {
-    const newBoardPost = this.boardRepository.create({
-      title: createBoardDto.title,
-      content: createBoardDto.content,
-      imageUrl: uploadedUrl,
-    });
-    const saveBoardPost = await this.boardRepository.save(newBoardPost);
-    return saveBoardPost;
+    // private readonly s3Service: S3Service,
+  ) {
+    super(boardRepository); // 부모 생성자 호출 시 BoardRepository 전달
   }
+  // 부모 서비스(BaseService)의 메서드를 그대로 사용하거나,
+  // 자식만의 특별한 로직을 여기에 작성할 수 있습니다.
 
-  // 전체 post 불러오기
-  async findAll(): Promise<Board[]> {
-    const BoardPostAllList = await this.boardRepository.find();
-    console.log(BoardPostAllList);
-    return BoardPostAllList;
-  }
-
-  //ID로 포스트 불러오기
-  async findOne(id: string): Promise<Board> {
-    const BoardPostByIdList = await this.boardRepository.findOne({
-      where: { id },
-      relations: ['comments'], // 댓글내용 []형식으로 불러오기
-    });
-    console.log(BoardPostByIdList);
-    return BoardPostByIdList;
-  }
-
-  // 업데이트
-  async update(id: string, updateBoardDto: UpdateBoardDto): Promise<Board> {
-    await this.boardRepository.update(id, updateBoardDto);
-    const updateBoardPosts = await this.boardRepository.findOneBy({ id });
-    return updateBoardPosts;
-  }
-
-  // 삭제
-  async remove(id: string): Promise<void> {
-    await this.boardRepository.delete({ id });
+  // 예시: 추가적인 메서드가 필요한 경우
+  async customMethod() {
+    // 자식 서비스에서만 필요한 로직
+    return 'This is a custom method in BoardService';
   }
 }

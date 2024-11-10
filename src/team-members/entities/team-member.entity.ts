@@ -1,16 +1,8 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Board } from 'src/board/entities/board.entity';
+import { Column, Entity } from 'typeorm';
 
 @Entity()
-export class TeamMember {
-  @PrimaryGeneratedColumn()
-  id: number;
-
-  @Column({ length: 25 })
-  title: string;
-
+export class TeamMember extends Board {
   @Column()
-  content: string;
-
-  @Column({ nullable: true })
-  imageUrl: string;
+  teamMemberName: string;
 }

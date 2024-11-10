@@ -11,21 +11,23 @@ export class CommentService {
   constructor(
     @InjectRepository(Comment)
     private readonly commentRepository: Repository<Comment>,
-    @InjectRepository(Board)
-    private readonly boardRepository: Repository<Board>,
+
+    // 보드에 기능 넣고 불러오기
+    // @InjectRepository(Board)
+    // private readonly boardRepository: Repository<Board>,
   ) {}
 
   // 댓글 생성
-  async create(postId: string, createCommentDto: CreateCommentDto) {
-    const board = await this.boardRepository.findOneBy({ id: postId });
-    console.log(board);
-    const newComment = this.commentRepository.create({
-      postId: board,
-      content: createCommentDto.content,
-    });
-    const saveNewComment = await this.commentRepository.save(newComment);
-    return saveNewComment;
-  }
+  // async create(postId: string, createCommentDto: CreateCommentDto) {
+  //   const board = await this.boardRepository.findOneBy({ id: postId });
+  //   console.log(board);
+  //   const newComment = this.commentRepository.create({
+  //     postId: board,
+  //     content: createCommentDto.content,
+  //   });
+  //   const saveNewComment = await this.commentRepository.save(newComment);
+  //   return saveNewComment;
+  // }
 
   findAll() {
     return `This action returns all comment`;
