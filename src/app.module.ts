@@ -21,6 +21,7 @@ import { S3Module } from './s3/s3.module';
     ConfigModule.forRoot({
       isGlobal: true, // ConfigModule을 전역 모듈로 설정
     }),
+
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
