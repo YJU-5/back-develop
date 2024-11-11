@@ -91,18 +91,13 @@ export class BoardController {
     // return this.boardService.update(id, updateBoardDto);
   }
 
-  // 모든 게시글들 가져오기
-  // @ApiOperationDecorator(
-  //   '게시판 Get All',
-  //   '# 게시판 Get All',
-  //   200,
-  //   '성공적으로 게시판 Get All',
-  // )
-  // @Get()
-  // findAll(): Promise<Board[]> {
-  //   return this.boardService.findAll();
-  // }
-
+  // 페이지네이션 GET
+  @ApiOperationDecorator(
+    '게시판 페이지네이션',
+    '# 게시판 페이지네이션',
+    200,
+    '성공적으로 게시판 페이지네이션',
+  )
   @Get('')
   async index(
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,
@@ -139,6 +134,4 @@ export class BoardController {
   remove(@Param('id') id: string): Promise<void> {
     return this.boardService.remove(id);
   }
-
-  // 페이지네이션 GET
 }

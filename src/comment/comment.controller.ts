@@ -11,7 +11,7 @@ export class CommentController {
   // 댓글 생성
   @ApiOperationDecorator(
     '댓글 Post',
-    '# 댓글 Post',
+    '# 댓글 Post : id에 Board의 ID를 넣어주는 것으로 구현',
     201,
     '성공적으로 댓글 Post',
   )
@@ -22,7 +22,8 @@ export class CommentController {
   ) {
     return this.commentService.create(postId, createCommentDto);
   }
-
+// https://nestjs-image-bucket.s3.ap-northeast-2.amazonaws.com/41ffb160-a8bb-4825-8f80-f4c0547fd077-%C3%AA%C2%B9%C2%80%C3%AD%C2%98%C2%95%C3%AC%C2%84%C2%A0010-%203727-0989.jpg
+// https://nestjs-image-bucket.s3.ap-northeast-2.amazonaws.com/41ffb160-a8bb-4825-8f80-f4c0547fd077-%C3%AA%C2%B9%C2%80%C3%AD%C2%98%C2%95%C3%AC%C2%84%20010-%203727-0989.jpg
   // @ApiOperationDecorator('댓글 Get', '# 댓글 Get', 200, '성공적으로 댓글 Get')
   // @Get()
   // findAll() {

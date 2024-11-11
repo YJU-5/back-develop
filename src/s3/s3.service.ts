@@ -26,6 +26,10 @@ export class S3Service {
   }
 
   async uploadFile(file: Express.Multer.File): Promise<string> {
+    // 파일이름 한글로 바꾸기
+    file.originalname = Buffer.from(file.originalname, 'ascii').toString(
+      'utf-8',
+    );
     const fileKey = `${uuidv4()}-${file.originalname}`;
     const params = {
       Bucket: this.bucketName,
@@ -47,7 +51,6 @@ export class S3Service {
   // 기존 이미지 삭제
   async deleteFile(fileUrls: string[]): Promise<void> {
     const deletePromises = fileUrls.map(async (fileUrl) => {
-      console.log(fileUrl);
       const fileName = fileUrl.split(`${this.bucketName}/`)[0]; // URL에서 파일명 추출// 이거 여러 파일이어도 가능한지 체크해보기
       const command = new DeleteObjectCommand({
         Bucket: this.bucketName,
