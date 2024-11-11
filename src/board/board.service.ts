@@ -1,26 +1,85 @@
 import { Injectable } from '@nestjs/common';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { UpdateBoardDto } from './dto/update-board.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Board } from './entities/board.entity';
+import { S3Service } from 'src/s3/s3.service';
+import {
+  IPaginationOptions,
+  paginate,
+  Pagination,
+} from 'nestjs-typeorm-paginate';
 
 @Injectable()
 export class BoardService {
-  create(createBoardDto: CreateBoardDto) {
-    return 'This action adds a new board';
+  constructor(
+    @InjectRepository(Board)
+    private readonly boardRepository: Repository<Board>,
+    private readonly s3Service: S3Service,
+  ) {}
+
+  // 포스트 생성
+  async create(
+    createBoardDto: CreateBoardDto,
+    uploadedUrl: string[],
+  ): Promise<Board> {
+    const newBoardPost = this.boardRepository.create({
+      title: createBoardDto.title,
+      content: createBoardDto.content,
+      imageUrl: uploadedUrl,
+    });
+    const saveBoardPost = await this.boardRepository.save(newBoardPost);
+    return saveBoardPost;
   }
 
-  findAll() {
-    return `This action returns all board`;
+  // 전체 post 불러오기
+  async findAll(): Promise<Board[]> {
+    const BoardPostAllList = await this.boardRepository.find();
+    console.log(BoardPostAllList);
+    return BoardPostAllList;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} board`;
+  //ID로 포스트 불러오기
+  async findOne(id: string): Promise<Board> {
+    const BoardPostByIdList = await this.boardRepository.findOne({
+      where: { id },
+      relations: ['comments'], // 댓글내용 []형식으로 불러오기
+    });
+    return BoardPostByIdList;
   }
 
-  update(id: number, updateBoardDto: UpdateBoardDto) {
-    return `This action updates a #${id} board`;
+  // 업데이트
+  async update(
+    id: string,
+    updateBoardDto: UpdateBoardDto,
+    uploadedUrl: string[],
+  ): Promise<Board> {
+    const BoardPost = await this.boardRepository.findOneBy({ id });
+    await this.s3Service.deleteFile(BoardPost.imageUrl);
+    await this.boardRepository.update(id, {
+      title: updateBoardDto.title,
+      content: updateBoardDto.content,
+      imageUrl: uploadedUrl,
+    });
+    return BoardPost;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} board`;
+  // 삭제
+  async remove(id: string): Promise<void> {
+    const BoardPost = await this.boardRepository.findOneBy({ id });
+    await this.s3Service.deleteFile(BoardPost.imageUrl);
+    await this.boardRepository.delete({ id });
+  }
+
+  // 아이디로 포스트 찾기
+  async findBoardById(postId: string): Promise<Board> {
+    const board = await this.boardRepository.findOneBy({ id: postId });
+    return board;
+  }
+
+  // 페이지네이션
+  async paginate(options: IPaginationOptions): Promise<Pagination<Board>> {
+    return paginate<Board>(this.boardRepository, options);
   }
 }

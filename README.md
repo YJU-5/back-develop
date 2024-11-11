@@ -23,13 +23,39 @@
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
 
+# BackEnd 개발 레퍼지토리
+
+## 구현해야하는거 
+- 게시판
+  - 페이징(https://velog.io/@from_numpy/NestJS-Pagination-with-TypeORM-feat-Refactoring), 댓글(Prototype) 
+
+# 구현해볼까?? 
+- post에 userId연동해서 유저가 작성한 포스트들 볼 수 있게 하기 
+- 상황에 맞게 정확한 오류 
+
+# 구현 순서 
+- 회원가입(Prototype) -> 로그인 (Prototype)
+- 게시판 -> 페이징
+
+# S3 이미지 업로드 
+- 이미지의 body FormData로 간다
+
+# 할 일
+- 페이지네이션 물어보기 
+
+# 개선점 
+- 데코레이터에 swagger를 작성하여 모두 통일되게 ApiBody를 사용하여
+<!-- ## Description
+
+[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+
 ## 백엔드 문서 보는법 
 터미널에서 package.json으로 이동한 다음 
 ```bash
 $ npm run start:dev
 ```
 그리고 브라우저 주소창에 localhost:3001/api 입력 
-## Compile and run the project
+## Compile and run the project -->
 
 <!-- ```bash
 # development
