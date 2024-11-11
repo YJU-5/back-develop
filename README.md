@@ -26,9 +26,6 @@
 # BackEnd 개발 레퍼지토리
 
 ## 구현해야하는거 
-- Swagger Dto 설정 및 DB 구현 
-- 조원소개 DTO는 1학기때 했던거 참고 
-- 현지학기소개는 title, content, image 
 - 게시판
   - 페이징, 댓글(Prototype) 
 
@@ -38,7 +35,6 @@
 
 # 구현 순서 
 - 회원가입(Prototype) -> 로그인 (Prototype)
-- 이미지 AWS
 - 게시판 -> 페이징
 
 # S3 이미지 업로드 
