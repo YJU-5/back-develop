@@ -51,19 +51,19 @@ export class BoardService {
     uploadedUrl: string[],
   ): Promise<Board> {
     const BoardPost = await this.boardRepository.findOneBy({ id });
-    console.log(BoardPost);
     await this.s3Service.deleteFile(BoardPost.imageUrl);
-    const updateBoardPosts = await this.boardRepository.findOneBy({ id });
     await this.boardRepository.update(id, {
       title: updateBoardDto.title,
       content: updateBoardDto.content,
       imageUrl: uploadedUrl,
     });
-    return updateBoardPosts;
+    return BoardPost;
   }
 
   // 삭제
   async remove(id: string): Promise<void> {
+    const BoardPost = await this.boardRepository.findOneBy({ id });
+    await this.s3Service.deleteFile(BoardPost.imageUrl);
     await this.boardRepository.delete({ id });
   }
 

@@ -13,4 +13,14 @@ export class TeamMember {
 
   @Column('simple-array', { nullable: true })
   imageUrl: string[];
+
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  createdAt: Date;
+
+  @Column({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+    onUpdate: 'CURRENT_TIMESTAMP',
+  }) // 수정일시
+  updatedAt: Date;
 }

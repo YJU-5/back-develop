@@ -48,7 +48,7 @@ export class S3Service {
   async deleteFile(fileUrls: string[]): Promise<void> {
     const deletePromises = fileUrls.map(async (fileUrl) => {
       console.log(fileUrl);
-      const fileName = fileUrl.split(`${this.bucketName}/`)[0]; // URL에서 파일명 추출
+      const fileName = fileUrl.split(`${this.bucketName}/`)[0]; // URL에서 파일명 추출// 이거 여러 파일이어도 가능한지 체크해보기
       const command = new DeleteObjectCommand({
         Bucket: this.bucketName,
         Key: fileName,
