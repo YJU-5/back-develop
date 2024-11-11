@@ -8,6 +8,9 @@ import {
   Delete,
   UploadedFiles,
   UploadedFile,
+  Query,
+  DefaultValuePipe,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { BoardService } from './board.service';
 import { CreateBoardDto } from './dto/create-board.dto';
@@ -17,6 +20,7 @@ import { Board } from './entities/board.entity';
 import { Express } from 'express';
 import { S3Service } from 'src/s3/s3.service';
 import { ApiFile } from 'src/decorator/api.file.decorator';
+import { Pagination } from 'nestjs-typeorm-paginate';
 @Controller('board')
 export class BoardController {
   constructor(
@@ -88,15 +92,28 @@ export class BoardController {
   }
 
   // 모든 게시글들 가져오기
-  @ApiOperationDecorator(
-    '게시판 Get All',
-    '# 게시판 Get All',
-    200,
-    '성공적으로 게시판 Get All',
-  )
-  @Get()
-  findAll(): Promise<Board[]> {
-    return this.boardService.findAll();
+  // @ApiOperationDecorator(
+  //   '게시판 Get All',
+  //   '# 게시판 Get All',
+  //   200,
+  //   '성공적으로 게시판 Get All',
+  // )
+  // @Get()
+  // findAll(): Promise<Board[]> {
+  //   return this.boardService.findAll();
+  // }
+
+  @Get('')
+  async index(
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number = 10,
+  ): Promise<Pagination<Board>> {
+    limit = limit > 100 ? 100 : limit;
+    return this.boardService.paginate({
+      page,
+      limit,
+      route: 'localhost:3001/board',
+    });
   }
 
   // 게시글 가져오기 By Id
@@ -122,4 +139,6 @@ export class BoardController {
   remove(@Param('id') id: string): Promise<void> {
     return this.boardService.remove(id);
   }
+
+  // 페이지네이션 GET
 }

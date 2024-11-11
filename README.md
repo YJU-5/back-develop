@@ -27,7 +27,7 @@
 
 ## 구현해야하는거 
 - 게시판
-  - 페이징, 댓글(Prototype) 
+  - 페이징(https://velog.io/@from_numpy/NestJS-Pagination-with-TypeORM-feat-Refactoring), 댓글(Prototype) 
 
 # 구현해볼까?? 
 - post에 userId연동해서 유저가 작성한 포스트들 볼 수 있게 하기 

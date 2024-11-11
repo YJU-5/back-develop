@@ -5,6 +5,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Board } from './entities/board.entity';
 import { S3Service } from 'src/s3/s3.service';
+import {
+  IPaginationOptions,
+  paginate,
+  Pagination,
+} from 'nestjs-typeorm-paginate';
 
 @Injectable()
 export class BoardService {
@@ -71,5 +76,10 @@ export class BoardService {
   async findBoardById(postId: string): Promise<Board> {
     const board = await this.boardRepository.findOneBy({ id: postId });
     return board;
+  }
+
+  // 페이지네이션
+  async paginate(options: IPaginationOptions): Promise<Pagination<Board>> {
+    return paginate<Board>(this.boardRepository, options);
   }
 }
