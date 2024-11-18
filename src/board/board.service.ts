@@ -4,7 +4,7 @@ import { UpdateBoardDto } from './dto/update-board.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Board } from './entities/board.entity';
-import { S3Service } from 'src/s3/s3.service';
+import { S3Service } from '../s3/s3.service';
 import {
   IPaginationOptions,
   paginate,
@@ -57,12 +57,11 @@ export class BoardService {
   ): Promise<Board> {
     const BoardPost = await this.boardRepository.findOneBy({ id });
     await this.s3Service.deleteFile(BoardPost.imageUrl);
-    const UpdatedBoardPost = await this.boardRepository.update(id, {
+    await this.boardRepository.update(id, {
       title: updateBoardDto.title,
       content: updateBoardDto.content,
       imageUrl: uploadedUrl,
     });
-    console.log(UpdatedBoardPost);
     return BoardPost;
   }
 

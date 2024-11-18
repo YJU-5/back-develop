@@ -15,11 +15,11 @@ import {
 import { BoardService } from './board.service';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { UpdateBoardDto } from './dto/update-board.dto';
-import { ApiOperationDecorator } from 'src/decorator/api.operration.decorator';
+import { ApiOperationDecorator } from '../decorator/api.operration.decorator';
 import { Board } from './entities/board.entity';
 import { Express } from 'express';
-import { S3Service } from 'src/s3/s3.service';
-import { ApiFile } from 'src/decorator/api.file.decorator';
+import { S3Service } from '../s3/s3.service';
+import { ApiFile } from '../decorator/api.file.decorator';
 import { Pagination } from 'nestjs-typeorm-paginate';
 @Controller('board')
 export class BoardController {
@@ -68,7 +68,6 @@ export class BoardController {
   )
   @Patch(':id')
   @ApiFile('file')
-  // 이미지가 없고 글만 수정하고싶을때
   async update(
     @Param('id') id: string,
     @Body() updateBoardDto: UpdateBoardDto,

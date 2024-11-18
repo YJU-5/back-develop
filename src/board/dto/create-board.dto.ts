@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Column, Entity } from 'typeorm';
-import { IsString, IsOptional, IsNotEmpty } from 'class-validator';
+import { IsString, IsOptional } from 'class-validator';
 @Entity()
 export class CreateBoardDto {
   @ApiProperty({
@@ -10,7 +10,6 @@ export class CreateBoardDto {
     example: '제목',
   })
   @IsString()
-  @IsNotEmpty()
   title: string;
 
   @ApiProperty({
