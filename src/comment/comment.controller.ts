@@ -49,7 +49,7 @@ export class CommentController {
   )
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateCommentDto: UpdateCommentDto) {
-    return this.commentService.update(+id, updateCommentDto);
+    return this.commentService.update(id, updateCommentDto);
   }
 
   // @ApiOperationDecorator(
@@ -58,8 +58,8 @@ export class CommentController {
   //   200,
   //   '성공적으로 댓글 Delete',
   // )
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.commentService.remove(+id);
-  // }
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.commentService.remove(+id);
+  }
 }
