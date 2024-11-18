@@ -1,5 +1,5 @@
 import { CreateTeamMemberDto } from './create-team-member.dto';
-import { IsString, IsOptional } from 'class-validator';
+import { IsString, IsOptional, IsNotEmpty } from 'class-validator';
 import { ApiProperty, PartialType } from '@nestjs/swagger';
 import { Column } from 'typeorm';
 
@@ -10,6 +10,7 @@ export class UpdateTeamMemberDto extends PartialType(CreateTeamMemberDto) {
     example: '팀 멤버 이름 수정 내용',
   })
   @IsString()
+  @IsNotEmpty()
   readonly title?: string;
 
   @ApiProperty({
