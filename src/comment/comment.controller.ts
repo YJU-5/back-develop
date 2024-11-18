@@ -36,10 +36,10 @@ export class CommentController {
   //   200,
   //   '성공적으로 댓글 Get by ID',
   // )
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.commentService.findOne(+id);
-  // }
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.commentService.findOne(id);
+  }
 
   @ApiOperationDecorator(
     '댓글 Update',
@@ -49,7 +49,7 @@ export class CommentController {
   )
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateCommentDto: UpdateCommentDto) {
-    return this.commentService.update(+id, updateCommentDto);
+    return this.commentService.update(id, updateCommentDto);
   }
 
   // @ApiOperationDecorator(

@@ -1,7 +1,7 @@
 import { CreateLocalSemesterDto } from './create-local-semester.dto';
 import { Column } from 'typeorm';
 import { ApiProperty, PartialType } from '@nestjs/swagger';
-import { IsString, IsOptional } from 'class-validator';
+import { IsString, IsOptional, IsNotEmpty } from 'class-validator';
 
 export class UpdateLocalSemesterDto extends PartialType(
   CreateLocalSemesterDto,
@@ -12,6 +12,7 @@ export class UpdateLocalSemesterDto extends PartialType(
     example: '현지 학기 제목 수정 내용',
   })
   @IsString()
+  @IsNotEmpty()
   readonly title?: string;
 
   @ApiProperty({

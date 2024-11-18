@@ -68,6 +68,7 @@ export class BoardController {
   )
   @Patch(':id')
   @ApiFile('file')
+  // 이미지가 없고 글만 수정하고싶을때
   async update(
     @Param('id') id: string,
     @Body() updateBoardDto: UpdateBoardDto,

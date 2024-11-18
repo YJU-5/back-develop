@@ -1,7 +1,7 @@
 import { Column, Entity } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsOptional, IsString } from 'class-validator';
-
+import { IsNotEmpty } from 'class-validator';
 @Entity()
 export class CreateTeamMemberDto {
   @ApiProperty({
@@ -11,6 +11,7 @@ export class CreateTeamMemberDto {
     example: '팀 멤버 이름',
   })
   @IsString()
+  @IsNotEmpty()
   title: string;
 
   @ApiProperty({
@@ -20,6 +21,7 @@ export class CreateTeamMemberDto {
     example: '좌우명 : 잘 살자',
   })
   @IsString()
+  @IsNotEmpty()
   content: string;
 
   @ApiProperty({

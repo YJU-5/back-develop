@@ -30,12 +30,17 @@ export class CommentService {
     return `This action returns all comment`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} comment`;
+  async findOne(id: string) {
+    const CommentByIdList = await this.commentRepository.findOneBy({ id });
+    return CommentByIdList;
   }
 
-  update(id: number, updateCommentDto: UpdateCommentDto) {
-    return `This action updates a #${id} comment`;
+  async update(id: string, updateCommentDto: UpdateCommentDto) {
+    const CommentByIdList = await this.commentRepository.findOneBy({ id });
+    await this.commentRepository.update(id, {
+      content: updateCommentDto.content,
+    });
+    return;
   }
 
   remove(id: number) {

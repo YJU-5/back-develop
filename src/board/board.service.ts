@@ -57,11 +57,12 @@ export class BoardService {
   ): Promise<Board> {
     const BoardPost = await this.boardRepository.findOneBy({ id });
     await this.s3Service.deleteFile(BoardPost.imageUrl);
-    await this.boardRepository.update(id, {
+    const UpdatedBoardPost = await this.boardRepository.update(id, {
       title: updateBoardDto.title,
       content: updateBoardDto.content,
       imageUrl: uploadedUrl,
     });
+    console.log(UpdatedBoardPost);
     return BoardPost;
   }
 

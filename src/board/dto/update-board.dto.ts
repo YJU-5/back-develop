@@ -1,6 +1,6 @@
 import { ApiProperty, PartialType } from '@nestjs/swagger';
 import { CreateBoardDto } from './create-board.dto';
-import { IsString, IsOptional } from 'class-validator';
+import { IsString, IsOptional, IsNotEmpty } from 'class-validator';
 import { Column } from 'typeorm';
 
 export class UpdateBoardDto extends PartialType(CreateBoardDto) {
@@ -10,6 +10,7 @@ export class UpdateBoardDto extends PartialType(CreateBoardDto) {
     example: '제목 수정 내용',
   })
   @IsString()
+  @IsNotEmpty()
   readonly title?: string;
 
   @ApiProperty({

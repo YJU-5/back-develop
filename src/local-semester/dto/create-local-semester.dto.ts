@@ -1,7 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsOptional, IsString } from 'class-validator';
-
+import { IsOptional, IsString, IsNotEmpty } from 'class-validator';
 @Entity()
 export class CreateLocalSemesterDto {
   @ApiProperty({
@@ -11,6 +10,7 @@ export class CreateLocalSemesterDto {
     example: '오사카',
   })
   @IsString()
+  @IsNotEmpty()
   title: string;
 
   @ApiProperty({
@@ -20,6 +20,7 @@ export class CreateLocalSemesterDto {
     example: '오사카에서 ~함',
   })
   @IsString()
+  @IsNotEmpty()
   content: string;
 
   @ApiProperty({
