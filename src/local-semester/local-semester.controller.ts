@@ -12,9 +12,9 @@ import {
 import { LocalSemesterService } from './local-semester.service';
 import { CreateLocalSemesterDto } from './dto/create-local-semester.dto';
 import { UpdateLocalSemesterDto } from './dto/update-local-semester.dto';
-import { ApiOperationDecorator } from 'src/decorator/api.operration.decorator';
-import { ApiFile } from 'src/decorator/api.file.decorator';
-import { S3Service } from 'src/s3/s3.service';
+import { ApiOperationDecorator } from '../decorator/api.operration.decorator';
+import { ApiFile } from '../decorator/api.file.decorator';
+import { S3Service } from '../s3/s3.service';
 import { LocalSemester } from './entities/local-semester.entity';
 
 @Controller('local-semester')

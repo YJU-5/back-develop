@@ -1,6 +1,7 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
-import { Comment } from 'src/comment/entities/comment.entity';
+import { Comment } from '../../comment/entities/comment.entity';
+
 @Entity()
 export class Board {
   @PrimaryGeneratedColumn('uuid')

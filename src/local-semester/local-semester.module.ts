@@ -3,7 +3,7 @@ import { LocalSemesterService } from './local-semester.service';
 import { LocalSemesterController } from './local-semester.controller';
 import { LocalSemester } from './entities/local-semester.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { S3Module } from 'src/s3/s3.module';
+import { S3Module } from '../s3/s3.module';
 
 @Module({
   imports: [TypeOrmModule.forFeature([LocalSemester]), S3Module],

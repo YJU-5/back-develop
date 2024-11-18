@@ -12,9 +12,9 @@ import {
 import { TeamMembersService } from './team-members.service';
 import { CreateTeamMemberDto } from './dto/create-team-member.dto';
 import { UpdateTeamMemberDto } from './dto/update-team-member.dto';
-import { ApiOperationDecorator } from 'src/decorator/api.operration.decorator';
-import { S3Service } from 'src/s3/s3.service';
-import { ApiFile } from 'src/decorator/api.file.decorator';
+import { ApiOperationDecorator } from '../decorator/api.operration.decorator';
+import { S3Service } from '../s3/s3.service';
+import { ApiFile } from '../decorator/api.file.decorator';
 import { TeamMember } from './entities/team-member.entity';
 
 @Controller('team-members')

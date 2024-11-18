@@ -26,22 +26,22 @@
 # BackEnd 개발 레퍼지토리
 
 ## 구현해야하는거 
-- 게시판
-  - 페이징(https://velog.io/@from_numpy/NestJS-Pagination-with-TypeORM-feat-Refactoring), 댓글(Prototype) 
+- 마이그레이션, seed, 오류 response
 
 # 구현해볼까?? 
 - post에 userId연동해서 유저가 작성한 포스트들 볼 수 있게 하기 
 - 상황에 맞게 정확한 오류 
 
 # 구현 순서 
-- 회원가입(Prototype) -> 로그인 (Prototype)
-- 게시판 -> 페이징
+- 마이그레이션 -> seed -> 오류response 구현 
 
 # S3 이미지 업로드 
 - 이미지의 body FormData로 간다
 
 # 할 일
-- 페이지네이션 물어보기 
+- typeorm 마이그레이션 수행, data-source로 DB환경 관리 
+- 공식문서보고 배우기 
+- 
 
 # 개선점 
 - 데코레이터에 swagger를 작성하여 모두 통일되게 ApiBody를 사용하여
