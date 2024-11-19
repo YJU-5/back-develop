@@ -22,6 +22,8 @@ export class TeamMembersService {
     const newTeamMember = this.teamRepository.create({
       title: createTeamMemberDto.title,
       content: createTeamMemberDto.content,
+      age : createTeamMemberDto.age,
+      major: createTeamMemberDto.major,
       imageUrl: uploadedUrl,
     });
     const saveTeamMember = await this.teamRepository.save(newTeamMember);
@@ -47,9 +49,12 @@ export class TeamMembersService {
     await this.teamRepository.update(id,{
       title: updateTeamMemberDto.title,
       content:updateTeamMemberDto.content,
+      age:updateTeamMemberDto.age,
+      major:updateTeamMemberDto.major,
       imageUrl:uploadedUrl,
     });
-    return TeamMember;
+    const UpdatedTeamMember = await this.teamRepository.findOneBy({id})
+    return UpdatedTeamMember;
   }
 
   // 삭제 

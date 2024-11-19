@@ -62,7 +62,8 @@ export class BoardService {
       content: updateBoardDto.content,
       imageUrl: uploadedUrl,
     });
-    return;
+    const BoardUpdated = this.boardRepository.findOneBy({ id });
+    return BoardUpdated;
   }
 
   // 삭제

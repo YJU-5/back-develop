@@ -8,7 +8,7 @@ export class LocalSemester {
   @Column({ length: 25 })
   title: string;
 
-  @Column()
+  @Column('text')
   content: string;
 
   @Column('simple-array', { nullable: true })

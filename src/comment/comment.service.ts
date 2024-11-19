@@ -36,11 +36,11 @@ export class CommentService {
   // }
 
   async update(id: string, updateCommentDto: UpdateCommentDto) {
-    const CommentByIdList = await this.commentRepository.findOneBy({ id });
     await this.commentRepository.update(id, {
       content: updateCommentDto.content,
     });
-    return CommentByIdList;
+    const updatedComment = this.commentRepository.findOneBy({ id });
+    return updatedComment;
   }
 
   remove(id: string) {
