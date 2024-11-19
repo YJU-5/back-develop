@@ -21,7 +21,6 @@ import { Express } from 'express';
 import { S3Service } from '../s3/s3.service';
 import { ApiFile } from '../decorator/api.file.decorator';
 import { Pagination } from 'nestjs-typeorm-paginate';
-import { ApiParam } from '@nestjs/swagger';
 @Controller('board')
 export class BoardController {
   constructor(
@@ -76,6 +75,7 @@ export class BoardController {
     @UploadedFile() file: Express.Multer.File,
   ): Promise<any> {
     let uploadedUrls: string[];
+    console.log(updateBoardDto);
     // 파일이 하나인경우
     if (file) {
       uploadedUrls = [await this.s3Service.uploadFile(file)];
