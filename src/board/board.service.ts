@@ -62,7 +62,7 @@ export class BoardService {
       content: updateBoardDto.content,
       imageUrl: uploadedUrl,
     });
-    return BoardPost;
+    return;
   }
 
   // 삭제
