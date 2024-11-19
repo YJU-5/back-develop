@@ -12,7 +12,7 @@ export class Comment {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column('text')
   content: string;
 
   // 첫 번째 매개변수 (연결할 엔티티 지정)

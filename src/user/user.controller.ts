@@ -26,6 +26,7 @@ export class UserController {
     return this.userService.create(createUserDto);
   }
 
+  // 유저로그인
   @ApiOperationDecorator(
     '유저로그인',
     '# 유저로그인',

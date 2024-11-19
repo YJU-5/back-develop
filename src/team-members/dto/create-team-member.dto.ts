@@ -1,6 +1,6 @@
 import { Column, Entity } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsOptional, IsString } from 'class-validator';
+import { IsNumber, IsOptional, IsString } from 'class-validator';
 import { IsNotEmpty } from 'class-validator';
 @Entity()
 export class CreateTeamMemberDto {
@@ -23,6 +23,14 @@ export class CreateTeamMemberDto {
   @IsString()
   @IsNotEmpty()
   content: string;
+
+  @IsNumber()
+  @IsNotEmpty()
+  age: number;
+
+  @IsString()
+  @IsNotEmpty()
+  major: string;
 
   @ApiProperty({
     type: [String],

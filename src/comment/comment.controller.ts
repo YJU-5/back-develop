@@ -31,11 +31,12 @@ export class CommentController {
   ) {
     return this.commentService.create(postId, createCommentDto);
   }
-  // @ApiOperationDecorator('댓글 Get', '# 댓글 Get', 200, '성공적으로 댓글 Get')
-  // @Get()
-  // findAll() {
-  //   return this.commentService.findAll();
-  // }
+
+  @ApiOperationDecorator('댓글 Get', '# 댓글 Get', 200, '성공적으로 댓글 Get')
+  @Get()
+  findAll() {
+    return this.commentService.findAll();
+  }
 
   // @ApiOperationDecorator(
   //   '댓글 Get by ID',
@@ -67,6 +68,6 @@ export class CommentController {
   // )
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.commentService.remove(+id);
+    return this.commentService.remove(id);
   }
 }

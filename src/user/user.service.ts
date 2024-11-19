@@ -68,6 +68,8 @@ export class UserService {
         findUser.id,
       );
       return { access_token: token };
+    } else {
+      throw new UnauthorizedException('해당 이메일로된 유저가 없습니다');
     }
   }
 

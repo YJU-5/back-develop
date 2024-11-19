@@ -22,6 +22,7 @@
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
+# nestJs 공식문서 한글번역 (https://github.com/Coalery/nestjs-ko/blob/main/SUMMARY.md)
 
 # BackEnd 개발 레퍼지토리
 
@@ -45,7 +46,7 @@
 # 개선점 
 - 데코레이터에 swagger를 작성하여 모두 통일되게 ApiBody를 사용하여
 
-# 되나? develop push test ss sss 
+# 되나? develop push
 <!-- ## Description
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.

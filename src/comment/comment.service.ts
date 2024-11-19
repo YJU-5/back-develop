@@ -25,14 +25,15 @@ export class CommentService {
     return saveNewComment;
   }
 
-  findAll() {
-    return `This action returns all comment`;
+  async findAll() {
+    const CommentList = await this.commentRepository.find();
+    return CommentList;
   }
 
-  async findOne(id: string) {
-    const CommentByIdList = await this.commentRepository.findOneBy({ id });
-    return CommentByIdList;
-  }
+  // async findOne(id: string) {
+  //   const CommentByIdList = await this.commentRepository.findOneById(id);
+  //   return CommentByIdList;
+  // }
 
   async update(id: string, updateCommentDto: UpdateCommentDto) {
     const CommentByIdList = await this.commentRepository.findOneBy({ id });
@@ -42,7 +43,7 @@ export class CommentService {
     return CommentByIdList;
   }
 
-  remove(id: number) {
+  remove(id: string) {
     return `This action removes a #${id} comment`;
   }
 }
