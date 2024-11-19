@@ -21,8 +21,6 @@ import { Express } from 'express';
 import { S3Service } from '../s3/s3.service';
 import { ApiFile } from '../decorator/api.file.decorator';
 import { Pagination } from 'nestjs-typeorm-paginate';
-import { ApiParam } from '@nestjs/swagger';
-import { ApiParamDecorator } from '../decorator/api.param.decoretor';
 @Controller('board')
 export class BoardController {
   constructor(
@@ -69,7 +67,6 @@ export class BoardController {
     '성공적으로 게시판 Update',
   )
   @Patch(':id')
-  @ApiParamDecorator()
   @ApiFile('file')
   async update(
     @Param('id') id: string,
@@ -122,7 +119,6 @@ export class BoardController {
     200,
     '성공적으로 게시판 Get by ID',
   )
-  @ApiParamDecorator()
   @Get(':id')
   findOne(@Param('id') id: string): Promise<Board> {
     return this.boardService.findOne(id);

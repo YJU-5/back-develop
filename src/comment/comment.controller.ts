@@ -12,7 +12,6 @@ import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
 import { ApiOperationDecorator } from '../decorator/api.operration.decorator';
 import { ApiBody } from '@nestjs/swagger';
-import { ApiParamDecorator } from '../decorator/api.param.decoretor';
 @Controller('comment')
 export class CommentController {
   constructor(private readonly commentService: CommentService) {}
