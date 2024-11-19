@@ -41,12 +41,11 @@
 # 할 일
 - typeorm 마이그레이션 수행, data-source로 DB환경 관리 
 - 공식문서보고 배우기 
-- 
 
 # 개선점 
 - 데코레이터에 swagger를 작성하여 모두 통일되게 ApiBody를 사용하여
 
-# 되나? develop push test ss 
+# 되나? develop push test ss sss 
 <!-- ## Description
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
