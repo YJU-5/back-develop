@@ -21,6 +21,7 @@ import { Express } from 'express';
 import { S3Service } from '../s3/s3.service';
 import { ApiFile } from '../decorator/api.file.decorator';
 import { Pagination } from 'nestjs-typeorm-paginate';
+import { ApiParam } from '@nestjs/swagger';
 @Controller('board')
 export class BoardController {
   constructor(

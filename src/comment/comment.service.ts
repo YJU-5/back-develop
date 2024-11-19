@@ -39,7 +39,7 @@ export class CommentService {
     await this.commentRepository.update(id, {
       content: updateCommentDto.content,
     });
-    return;
+    return CommentByIdList;
   }
 
   remove(id: number) {

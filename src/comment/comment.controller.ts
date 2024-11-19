@@ -1,9 +1,17 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { CommentService } from './comment.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
 import { ApiOperationDecorator } from '../decorator/api.operration.decorator';
-
+import { ApiBody } from '@nestjs/swagger';
 @Controller('comment')
 export class CommentController {
   constructor(private readonly commentService: CommentService) {}
@@ -16,6 +24,7 @@ export class CommentController {
     '성공적으로 댓글 Post',
   )
   @Post(':id')
+  @ApiBody({ type: CreateCommentDto })
   create(
     @Param('id') postId: string,
     @Body() createCommentDto: CreateCommentDto,
@@ -38,7 +47,7 @@ export class CommentController {
   // findOne(@Param('id') id: string) {
   //   return this.commentService.findOne(+id);
   // }
-
+  // 수정 기능
   @ApiOperationDecorator(
     '댓글 Update',
     '# 댓글 Update',
