@@ -4,7 +4,7 @@ import { UpdateBoardDto } from './dto/update-board.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Board } from './entities/board.entity';
-import { S3Service } from 'src/s3/s3.service';
+import { S3Service } from '../s3/s3.service';
 import {
   IPaginationOptions,
   paginate,
@@ -62,7 +62,8 @@ export class BoardService {
       content: updateBoardDto.content,
       imageUrl: uploadedUrl,
     });
-    return BoardPost;
+    const BoardUpdated = this.boardRepository.findOneBy({ id });
+    return BoardUpdated;
   }
 
   // 삭제

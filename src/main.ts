@@ -3,8 +3,7 @@ import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 import * as dotenv from 'dotenv';
-dotenv.config();  // .env 파일을 로드하여 환경 변수 사용 가능하게 만듦
-
+dotenv.config(); // .env 파일을 로드하여 환경 변수 사용 가능하게 만듦
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

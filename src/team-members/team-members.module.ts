@@ -3,7 +3,7 @@ import { TeamMembersService } from './team-members.service';
 import { TeamMembersController } from './team-members.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TeamMember } from './entities/team-member.entity';
-import { S3Module } from 'src/s3/s3.module';
+import { S3Module } from '../s3/s3.module';
 
 @Module({
   imports: [TypeOrmModule.forFeature([TeamMember]), S3Module],

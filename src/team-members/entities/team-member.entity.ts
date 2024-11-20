@@ -9,6 +9,12 @@ export class TeamMember {
   title: string;
 
   @Column()
+  age: number;
+
+  @Column()
+  major: string;
+
+  @Column('text')
   content: string;
 
   @Column('simple-array', { nullable: true })

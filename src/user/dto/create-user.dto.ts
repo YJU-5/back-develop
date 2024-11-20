@@ -1,10 +1,9 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { IsString } from "class-validator";
-import { Entity } from "typeorm";
+import { ApiProperty } from '@nestjs/swagger';
+import { IsNotEmpty, IsString } from 'class-validator';
+import { Entity } from 'typeorm';
 
 @Entity()
 export class CreateUserDto {
-
   @ApiProperty({
     required: true,
     type: String,
@@ -12,6 +11,7 @@ export class CreateUserDto {
     example: '김씨',
   })
   @IsString()
+  @IsNotEmpty()
   name: string;
 
   @ApiProperty({
@@ -21,6 +21,7 @@ export class CreateUserDto {
     example: 'gudtjs1004s@naver.com',
   })
   @IsString()
+  @IsNotEmpty()
   email: string;
 
   @ApiProperty({
@@ -30,5 +31,6 @@ export class CreateUserDto {
     example: 'gudts219!',
   })
   @IsString()
+  @IsNotEmpty()
   password: string;
 }

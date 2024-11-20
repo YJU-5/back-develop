@@ -5,7 +5,7 @@ import { UpdateTeamMemberDto } from './dto/update-team-member.dto';
 import { Repository } from 'typeorm';
 import { TeamMember } from './entities/team-member.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { S3Service } from 'src/s3/s3.service';
+import { S3Service } from '../s3/s3.service';
 
 @Injectable()
 export class TeamMembersService {
@@ -22,6 +22,8 @@ export class TeamMembersService {
     const newTeamMember = this.teamRepository.create({
       title: createTeamMemberDto.title,
       content: createTeamMemberDto.content,
+      age : createTeamMemberDto.age,
+      major: createTeamMemberDto.major,
       imageUrl: uploadedUrl,
     });
     const saveTeamMember = await this.teamRepository.save(newTeamMember);
@@ -47,9 +49,12 @@ export class TeamMembersService {
     await this.teamRepository.update(id,{
       title: updateTeamMemberDto.title,
       content:updateTeamMemberDto.content,
+      age:updateTeamMemberDto.age,
+      major:updateTeamMemberDto.major,
       imageUrl:uploadedUrl,
     });
-    return TeamMember;
+    const UpdatedTeamMember = await this.teamRepository.findOneBy({id})
+    return UpdatedTeamMember;
   }
 
   // 삭제 

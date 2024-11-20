@@ -12,9 +12,9 @@ import {
 import { TeamMembersService } from './team-members.service';
 import { CreateTeamMemberDto } from './dto/create-team-member.dto';
 import { UpdateTeamMemberDto } from './dto/update-team-member.dto';
-import { ApiOperationDecorator } from 'src/decorator/api.operration.decorator';
-import { S3Service } from 'src/s3/s3.service';
-import { ApiFile } from 'src/decorator/api.file.decorator';
+import { ApiOperationDecorator } from '../decorator/api.operration.decorator';
+import { S3Service } from '../s3/s3.service';
+import { ApiFile } from '../decorator/api.file.decorator';
 import { TeamMember } from './entities/team-member.entity';
 
 @Controller('team-members')
@@ -34,9 +34,13 @@ export class TeamMembersController {
 
   // team-members 생성 및 이미지 업로드
   @Post()
-  @ApiFile('file')
+  @ApiFile('file', {
+    age: { type: 'number', example: 22 },
+    major: { type: 'string', example: '컴퓨터공학' },
+  })
   async create(
-    @Body() createTeamMemberDto: CreateTeamMemberDto,
+    @Body()
+    createTeamMemberDto: CreateTeamMemberDto,
     @UploadedFiles() files: Express.Multer.File[],
     @UploadedFile() file: Express.Multer.File,
   ): Promise<any> {
@@ -85,7 +89,10 @@ export class TeamMembersController {
     '성공적으로 조원소개 Update',
   )
   @Patch(':id')
-  @ApiFile('file')
+  @ApiFile('file', {
+    age: { type: 'number', example: 22 },
+    major: { type: 'string', example: '기존내용' },
+  })
   async update(
     @Param('id') id: string,
     @Body() updateTeamMemberDto: UpdateTeamMemberDto,

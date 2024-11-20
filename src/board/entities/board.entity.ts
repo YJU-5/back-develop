@@ -1,6 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
-import { Comment } from 'src/comment/entities/comment.entity';
+import { Comment } from '../../comment/entities/comment.entity';
 
 @Entity()
 export class Board {
@@ -10,7 +10,7 @@ export class Board {
   @Column({ length: 25 })
   title: string;
 
-  @Column()
+  @Column('text')
   content: string;
 
   @Column('simple-array', { nullable: true })

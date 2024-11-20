@@ -4,7 +4,7 @@ import { UpdateCommentDto } from './dto/update-comment.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Comment } from './entities/comment.entity';
-import { BoardService } from 'src/board/board.service';
+import { BoardService } from '../board/board.service';
 
 @Injectable()
 export class CommentService {
@@ -17,7 +17,6 @@ export class CommentService {
   // 댓글 생성
   async create(postId: string, createCommentDto: CreateCommentDto) {
     const board = await this.boardService.findBoardById(postId);
-    console.log(board);
     const newComment = this.commentRepository.create({
       postId: board,
       content: createCommentDto.content,
@@ -26,19 +25,25 @@ export class CommentService {
     return saveNewComment;
   }
 
-  findAll() {
-    return `This action returns all comment`;
+  async findAll() {
+    const CommentList = await this.commentRepository.find();
+    return CommentList;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} comment`;
+  // async findOne(id: string) {
+  //   const CommentByIdList = await this.commentRepository.findOneById(id);
+  //   return CommentByIdList;
+  // }
+
+  async update(id: string, updateCommentDto: UpdateCommentDto) {
+    await this.commentRepository.update(id, {
+      content: updateCommentDto.content,
+    });
+    const updatedComment = this.commentRepository.findOneBy({ id });
+    return updatedComment;
   }
 
-  update(id: number, updateCommentDto: UpdateCommentDto) {
-    return `This action updates a #${id} comment`;
-  }
-
-  remove(id: number) {
+  remove(id: string) {
     return `This action removes a #${id} comment`;
   }
 }

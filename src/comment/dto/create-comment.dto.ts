@@ -1,8 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString } from 'class-validator';
-import { Entity } from 'typeorm';
+import { IsString, IsNotEmpty } from 'class-validator';
 
-@Entity()
 export class CreateCommentDto {
   @ApiProperty({
     required: true,
@@ -11,5 +9,6 @@ export class CreateCommentDto {
     example: '댓글내용',
   })
   @IsString()
+  @IsNotEmpty()
   content: string;
 }

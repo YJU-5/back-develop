@@ -4,7 +4,7 @@ import { UpdateLocalSemesterDto } from './dto/update-local-semester.dto';
 import { LocalSemester } from './entities/local-semester.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { S3Service } from 'src/s3/s3.service';
+import { S3Service } from '../s3/s3.service';
 @Injectable()
 export class LocalSemesterService {
   constructor(
