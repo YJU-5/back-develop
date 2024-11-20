@@ -89,27 +89,20 @@ export class TeamMembersController {
     '성공적으로 조원소개 Update',
   )
   @Patch(':id')
-  @ApiFile('file', {
-    age: { type: 'number', example: 22 },
-    major: { type: 'string', example: '기존내용' },
-  })
+  // @ApiFile('file', {
+  //   age: { type: 'number', example: 22 },
+  //   major: { type: 'string', example: '기존내용' },
+  // })
   async update(
     @Param('id') id: string,
     @Body() updateTeamMemberDto: UpdateTeamMemberDto,
-    @UploadedFiles() files: Express.Multer.File[],
-    @UploadedFile() file: Express.Multer.File,
+    @UploadedFiles() files: Array<Express.Multer.File>,
   ): Promise<any> {
-    let uploadedUrls: string[];
-    // 파일이 하나인경우
-    if (file) {
-      uploadedUrls = [await this.s3Service.uploadFile(file)];
-      // 파일이 여러개인경우
-    } else if (files && files.length > 0) {
+    let uploadedUrls: string[] = [];
+    if (files) {
       uploadedUrls = await Promise.all(
         files.map((file) => this.s3Service.uploadFile(file)),
       );
-    } else {
-      uploadedUrls = [];
     }
     // return this.boardService.update(id, updateBoardDto, uploadedUrls);
     return this.teamMembersService.update(

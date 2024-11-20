@@ -84,7 +84,7 @@ export class LocalSemesterController {
   )
   @Patch(':id')
   @UseInterceptors(FilesInterceptor('files'))
-  @ApiFile('file')
+  // @ApiFile('file')
   async update(
     @Param('id') id: string,
     @Body() updateLocalSemesterDto: UpdateLocalSemesterDto,
