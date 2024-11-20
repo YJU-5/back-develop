@@ -12,5 +12,5 @@ export class UpdateBoardDto extends PartialType(CreateBoardDto) {
 
   @IsOptional()
   @Column({ type: 'simple-array', nullable: true })
-  file: string[];
+  imageUrl: string[];
 }

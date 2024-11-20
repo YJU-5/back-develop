@@ -8,6 +8,7 @@ import {
   Delete,
   UploadedFiles,
   UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
 import { LocalSemesterService } from './local-semester.service';
 import { CreateLocalSemesterDto } from './dto/create-local-semester.dto';
@@ -16,6 +17,7 @@ import { ApiOperationDecorator } from '../decorator/api.operration.decorator';
 import { ApiFile } from '../decorator/api.file.decorator';
 import { S3Service } from '../s3/s3.service';
 import { LocalSemester } from './entities/local-semester.entity';
+import { FilesInterceptor } from '@nestjs/platform-express';
 
 @Controller('local-semester')
 export class LocalSemesterController {
@@ -32,21 +34,16 @@ export class LocalSemesterController {
     '성공적으로 현지학기소개 Create',
   )
   @Post()
-  @ApiFile('file')
+  @UseInterceptors(FilesInterceptor('files'))
   async create(
     @Body() createLocalSemesterDto: CreateLocalSemesterDto,
-    @UploadedFiles() files: Express.Multer.File[],
-    @UploadedFile() file: Express.Multer.File,
+    @UploadedFiles() files: Array<Express.Multer.File>,
   ): Promise<any> {
-    let uploadedUrls: string[];
-    if (file) {
-      uploadedUrls = [await this.s3Service.uploadFile(file)];
-    } else if (files && files.length > 0) {
+    let uploadedUrls: string[] = [];
+    if (files) {
       uploadedUrls = await Promise.all(
         files.map((file) => this.s3Service.uploadFile(file)),
       );
-    } else {
-      uploadedUrls = [];
     }
     return this.localSemesterService.create(
       createLocalSemesterDto,
@@ -86,26 +83,19 @@ export class LocalSemesterController {
     '성공적으로 현지학기소개 Update',
   )
   @Patch(':id')
+  @UseInterceptors(FilesInterceptor('files'))
   @ApiFile('file')
   async update(
     @Param('id') id: string,
     @Body() updateLocalSemesterDto: UpdateLocalSemesterDto,
-    @UploadedFiles() files: Express.Multer.File[],
-    @UploadedFile() file: Express.Multer.File,
+    @UploadedFiles() files: Array<Express.Multer.File>,
   ): Promise<any> {
-    let uploadedUrls: string[];
-    // 파일이 하나인경우
-    if (file) {
-      uploadedUrls = [await this.s3Service.uploadFile(file)];
-      // 파일이 여러개인경우
-    } else if (files && files.length > 0) {
+    let uploadedUrls: string[] = [];
+    if (files) {
       uploadedUrls = await Promise.all(
         files.map((file) => this.s3Service.uploadFile(file)),
       );
-    } else {
-      uploadedUrls = [];
     }
-    console.log(uploadedUrls);
     // return this.boardService.update(id, updateBoardDto, uploadedUrls);
     return this.localSemesterService.update(
       id,

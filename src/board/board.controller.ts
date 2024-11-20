@@ -11,6 +11,7 @@ import {
   Query,
   DefaultValuePipe,
   ParseIntPipe,
+  UseInterceptors,
 } from '@nestjs/common';
 import { BoardService } from './board.service';
 import { CreateBoardDto } from './dto/create-board.dto';
@@ -21,6 +22,7 @@ import { Express } from 'express';
 import { S3Service } from '../s3/s3.service';
 import { ApiFile } from '../decorator/api.file.decorator';
 import { Pagination } from 'nestjs-typeorm-paginate';
+import { FilesInterceptor } from '@nestjs/platform-express';
 @Controller('board')
 export class BoardController {
   constructor(
@@ -37,24 +39,18 @@ export class BoardController {
   )
   // 게시글 생성 및 이미지 업로드
   @Post('')
+  @UseInterceptors(FilesInterceptor('files'))
   @ApiFile('file')
   async uploadFile(
     @Body() CreateBoardDto: CreateBoardDto, // 여기다 작업해보기
-    @UploadedFiles() files: Express.Multer.File[],
-    @UploadedFile() file: Express.Multer.File,
+    @UploadedFiles() files: Array<Express.Multer.File>,
   ): Promise<any> {
     // array가 될 uploadedUrls
-    let uploadedUrls: string[];
-    // 파일이 하나인경우
-    if (file) {
-      uploadedUrls = [await this.s3Service.uploadFile(file)];
-      // 파일이 여러개인경우
-    } else if (files && files.length > 0) {
+    let uploadedUrls: string[] = [];
+    if (files) {
       uploadedUrls = await Promise.all(
         files.map((file) => this.s3Service.uploadFile(file)),
       );
-    } else {
-      uploadedUrls = [];
     }
     return this.boardService.create(CreateBoardDto, uploadedUrls);
   }
@@ -67,25 +63,18 @@ export class BoardController {
     '성공적으로 게시판 Update',
   )
   @Patch(':id')
+  @UseInterceptors(FilesInterceptor('files'))
   @ApiFile('file')
   async update(
     @Param('id') id: string,
     @Body() updateBoardDto: UpdateBoardDto,
-    @UploadedFiles() files: Express.Multer.File[],
-    @UploadedFile() file: Express.Multer.File,
+    @UploadedFiles() files: Array<Express.Multer.File>,
   ): Promise<any> {
-    let uploadedUrls: string[];
-    console.log(updateBoardDto);
-    // 파일이 하나인경우
-    if (file) {
-      uploadedUrls = [await this.s3Service.uploadFile(file)];
-      // 파일이 여러개인경우
-    } else if (files && files.length > 0) {
+    let uploadedUrls: string[] = [];
+    if (files) {
       uploadedUrls = await Promise.all(
         files.map((file) => this.s3Service.uploadFile(file)),
       );
-    } else {
-      uploadedUrls = [];
     }
     return this.boardService.update(id, updateBoardDto, uploadedUrls);
 
