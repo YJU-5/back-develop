@@ -6,16 +6,17 @@ import {
   Patch,
   Param,
   Delete,
-  UploadedFile,
   UploadedFiles,
+  UseInterceptors,
 } from '@nestjs/common';
 import { TeamMembersService } from './team-members.service';
 import { CreateTeamMemberDto } from './dto/create-team-member.dto';
 import { UpdateTeamMemberDto } from './dto/update-team-member.dto';
 import { ApiOperationDecorator } from '../decorator/api.operration.decorator';
 import { S3Service } from '../s3/s3.service';
-import { ApiFile } from '../decorator/api.file.decorator';
 import { TeamMember } from './entities/team-member.entity';
+import { FilesInterceptor } from '@nestjs/platform-express';
+import { ApiFileTeam } from '../decorator/api.file.team.decoraotr';
 
 @Controller('team-members')
 export class TeamMembersController {
@@ -31,28 +32,18 @@ export class TeamMembersController {
     200,
     '성공적으로 조원소개 Create',
   )
-
   // team-members 생성 및 이미지 업로드
   @Post()
-  @ApiFile('file', {
-    age: { type: 'number', example: 22 },
-    major: { type: 'string', example: '컴퓨터공학' },
-  })
+  @ApiFileTeam()
   async create(
-    @Body()
-    createTeamMemberDto: CreateTeamMemberDto,
-    @UploadedFiles() files: Express.Multer.File[],
-    @UploadedFile() file: Express.Multer.File,
+    @Body() createTeamMemberDto: CreateTeamMemberDto,
+    @UploadedFiles() files: Array<Express.Multer.File>,
   ): Promise<any> {
-    let uploadedUrls: string[];
-    if (file) {
-      uploadedUrls = [await this.s3Service.uploadFile(file)];
-    } else if (files && files.length > 0) {
+    let uploadedUrls: string[] = [];
+    if (files) {
       uploadedUrls = await Promise.all(
         files.map((file) => this.s3Service.uploadFile(file)),
       );
-    } else {
-      uploadedUrls = [];
     }
     return this.teamMembersService.create(createTeamMemberDto, uploadedUrls);
   }
@@ -89,10 +80,7 @@ export class TeamMembersController {
     '성공적으로 조원소개 Update',
   )
   @Patch(':id')
-  // @ApiFile('file', {
-  //   age: { type: 'number', example: 22 },
-  //   major: { type: 'string', example: '기존내용' },
-  // })
+  @ApiFileTeam()
   async update(
     @Param('id') id: string,
     @Body() updateTeamMemberDto: UpdateTeamMemberDto,

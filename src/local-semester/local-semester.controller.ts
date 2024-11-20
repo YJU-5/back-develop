@@ -7,8 +7,6 @@ import {
   Param,
   Delete,
   UploadedFiles,
-  UploadedFile,
-  UseInterceptors,
 } from '@nestjs/common';
 import { LocalSemesterService } from './local-semester.service';
 import { CreateLocalSemesterDto } from './dto/create-local-semester.dto';
@@ -17,7 +15,6 @@ import { ApiOperationDecorator } from '../decorator/api.operration.decorator';
 import { ApiFile } from '../decorator/api.file.decorator';
 import { S3Service } from '../s3/s3.service';
 import { LocalSemester } from './entities/local-semester.entity';
-import { FilesInterceptor } from '@nestjs/platform-express';
 
 @Controller('local-semester')
 export class LocalSemesterController {
@@ -27,6 +24,7 @@ export class LocalSemesterController {
   ) {}
 
   // 현지학기 생성
+  // @ApiFile('files')
   @ApiOperationDecorator(
     '현지학기소개 Create',
     '# 현지학기소개 Create',
@@ -34,7 +32,7 @@ export class LocalSemesterController {
     '성공적으로 현지학기소개 Create',
   )
   @Post()
-  @UseInterceptors(FilesInterceptor('files'))
+  @ApiFile()
   async create(
     @Body() createLocalSemesterDto: CreateLocalSemesterDto,
     @UploadedFiles() files: Array<Express.Multer.File>,
@@ -83,8 +81,7 @@ export class LocalSemesterController {
     '성공적으로 현지학기소개 Update',
   )
   @Patch(':id')
-  @UseInterceptors(FilesInterceptor('files'))
-  // @ApiFile('file')
+  @ApiFile()
   async update(
     @Param('id') id: string,
     @Body() updateLocalSemesterDto: UpdateLocalSemesterDto,

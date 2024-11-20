@@ -7,7 +7,6 @@ import {
   Param,
   Delete,
   UploadedFiles,
-  UploadedFile,
   Query,
   DefaultValuePipe,
   ParseIntPipe,
@@ -18,7 +17,6 @@ import { CreateBoardDto } from './dto/create-board.dto';
 import { UpdateBoardDto } from './dto/update-board.dto';
 import { ApiOperationDecorator } from '../decorator/api.operration.decorator';
 import { Board } from './entities/board.entity';
-import { Express } from 'express';
 import { S3Service } from '../s3/s3.service';
 import { ApiFile } from '../decorator/api.file.decorator';
 import { Pagination } from 'nestjs-typeorm-paginate';
@@ -39,8 +37,7 @@ export class BoardController {
   )
   // 게시글 생성 및 이미지 업로드
   @Post('')
-  @UseInterceptors(FilesInterceptor('files'))
-  @ApiFile('file')
+  @ApiFile()
   async uploadFile(
     @Body() CreateBoardDto: CreateBoardDto, // 여기다 작업해보기
     @UploadedFiles() files: Array<Express.Multer.File>,
@@ -63,8 +60,7 @@ export class BoardController {
     '성공적으로 게시판 Update',
   )
   @Patch(':id')
-  @UseInterceptors(FilesInterceptor('files'))
-  @ApiFile('file')
+  @ApiFile()
   async update(
     @Param('id') id: string,
     @Body() updateBoardDto: UpdateBoardDto,
@@ -77,8 +73,6 @@ export class BoardController {
       );
     }
     return this.boardService.update(id, updateBoardDto, uploadedUrls);
-
-    // return this.boardService.update(id, updateBoardDto);
   }
 
   // 페이지네이션 GET

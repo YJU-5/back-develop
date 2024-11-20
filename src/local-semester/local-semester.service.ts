@@ -53,6 +53,8 @@ export class LocalSemesterService {
       content: updateLocalSemesterDto.content,
       imageUrl: uploadedUrl,
     });
+    const LocalSemesterUpdated = this.localRepository.findOneBy({ id });
+    return LocalSemesterUpdated;
   }
 
   async remove(id: string): Promise<void> {
