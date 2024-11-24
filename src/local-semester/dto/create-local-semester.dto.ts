@@ -1,10 +1,9 @@
-import { Column, Entity } from 'typeorm';
+import { Column } from 'typeorm';
 import { IsOptional, IsString, IsNotEmpty } from 'class-validator';
 
-@Entity()
 export class CreateLocalSemesterDto {
-  @IsString()
   @IsNotEmpty()
+  @IsString()
   title: string;
 
   @IsString()

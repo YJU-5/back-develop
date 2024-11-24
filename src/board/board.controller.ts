@@ -10,7 +10,6 @@ import {
   Query,
   DefaultValuePipe,
   ParseIntPipe,
-  UseInterceptors,
 } from '@nestjs/common';
 import { BoardService } from './board.service';
 import { CreateBoardDto } from './dto/create-board.dto';
@@ -20,7 +19,6 @@ import { Board } from './entities/board.entity';
 import { S3Service } from '../s3/s3.service';
 import { ApiFile } from '../decorator/api.file.decorator';
 import { Pagination } from 'nestjs-typeorm-paginate';
-import { FilesInterceptor } from '@nestjs/platform-express';
 @Controller('board')
 export class BoardController {
   constructor(
@@ -39,12 +37,14 @@ export class BoardController {
   @Post('')
   @ApiFile()
   async uploadFile(
-    @Body() CreateBoardDto: CreateBoardDto, // 여기다 작업해보기
+    @Body() CreateBoardDto: CreateBoardDto,
     @UploadedFiles() files: Array<Express.Multer.File>,
   ): Promise<any> {
-    // array가 될 uploadedUrls
+    // 이미지 배열이 될 uploadedUrls
     let uploadedUrls: string[] = [];
     if (files) {
+      // Promise.all의 역할 : 여러 비동기 작업을 동시 실행하고,
+      // 모든 작업이 완료될 때 까지 기다린 다음 결과를 배열로 반환하는 역할
       uploadedUrls = await Promise.all(
         files.map((file) => this.s3Service.uploadFile(file)),
       );

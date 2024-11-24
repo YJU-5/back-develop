@@ -7,7 +7,6 @@ import {
   Param,
   Delete,
   UploadedFiles,
-  UseInterceptors,
 } from '@nestjs/common';
 import { TeamMembersService } from './team-members.service';
 import { CreateTeamMemberDto } from './dto/create-team-member.dto';
@@ -15,7 +14,6 @@ import { UpdateTeamMemberDto } from './dto/update-team-member.dto';
 import { ApiOperationDecorator } from '../decorator/api.operration.decorator';
 import { S3Service } from '../s3/s3.service';
 import { TeamMember } from './entities/team-member.entity';
-import { FilesInterceptor } from '@nestjs/platform-express';
 import { ApiFileTeam } from '../decorator/api.file.team.decoraotr';
 
 @Controller('team-members')

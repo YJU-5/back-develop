@@ -1,6 +1,6 @@
-import { Column, Entity } from 'typeorm';
+import { Column } from 'typeorm';
 import { IsString, IsOptional, IsEmpty } from 'class-validator';
-@Entity()
+
 export class CreateBoardDto {
   @IsString()
   @IsEmpty()

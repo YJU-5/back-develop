@@ -88,12 +88,13 @@ export class LocalSemesterController {
     @UploadedFiles() files: Array<Express.Multer.File>,
   ): Promise<any> {
     let uploadedUrls: string[] = [];
+    // 기존 AWS URL은 Body에서 받아온다
+    // 파일이 있는 경우
     if (files) {
       uploadedUrls = await Promise.all(
         files.map((file) => this.s3Service.uploadFile(file)),
       );
     }
-    // return this.boardService.update(id, updateBoardDto, uploadedUrls);
     return this.localSemesterService.update(
       id,
       updateLocalSemesterDto,

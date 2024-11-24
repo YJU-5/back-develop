@@ -24,6 +24,8 @@ export class BoardService {
     createBoardDto: CreateBoardDto,
     uploadedUrl: string[],
   ): Promise<Board> {
+    // create : 엔티티 인스턴스 생성, 객체를 생성 -> 메모리에 유지
+    // 그 후에 추가작업이 가능 EX) 데이터 변환, 유효성 검사
     const newBoardPost = this.boardRepository.create({
       title: createBoardDto.title,
       content: createBoardDto.content,
@@ -36,7 +38,6 @@ export class BoardService {
   // 전체 post 불러오기
   async findAll(): Promise<Board[]> {
     const BoardPostAllList = await this.boardRepository.find();
-    console.log(BoardPostAllList);
     return BoardPostAllList;
   }
 
@@ -56,7 +57,17 @@ export class BoardService {
     uploadedUrl: string[],
   ): Promise<Board> {
     const BoardPost = await this.boardRepository.findOneBy({ id });
-    await this.s3Service.deleteFile(BoardPost.imageUrl);
+    const { existingImageUrls } = updateBoardDto;
+
+    const deleteUrl = BoardPost.imageUrl.filter(
+      (imageUrl) => !existingImageUrls.includes(imageUrl),
+    );
+    if (existingImageUrls && existingImageUrls.length > 0) {
+      uploadedUrl = [...existingImageUrls, ...uploadedUrl];
+    }
+    if (deleteUrl) {
+      await this.s3Service.deleteFile(BoardPost.imageUrl);
+    }
     await this.boardRepository.update(id, {
       title: updateBoardDto.title,
       content: updateBoardDto.content,

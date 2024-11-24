@@ -30,5 +30,5 @@ export class FilesUploadTeamDto {
   major: string;
 
   @ApiProperty({ type: 'array', items: { type: 'string', format: 'binary' } })
-  files: any[];
+  imageUrl: any[];
 }

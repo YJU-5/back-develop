@@ -5,8 +5,8 @@ import { FilesUploadTeamDto } from './dto/file-upload-team-dot';
 //api-file.decorator.ts
 export function ApiFileTeam() {
   return applyDecorators(
-    UseInterceptors(FilesInterceptor('files')),
+    UseInterceptors(FilesInterceptor('imageUrl')),
     ApiConsumes('multipart/form-data'),
     ApiBody({ type: FilesUploadTeamDto }),
   );
-};
+}

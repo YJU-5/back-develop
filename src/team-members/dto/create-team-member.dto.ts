@@ -1,8 +1,8 @@
-import { Column, Entity } from 'typeorm';
+import { Column } from 'typeorm';
 import { IsNumber, IsOptional, IsString } from 'class-validator';
 import { IsNotEmpty } from 'class-validator';
 import { Type } from 'class-transformer';
-@Entity()
+
 export class CreateTeamMemberDto {
   @IsString()
   @IsNotEmpty()
