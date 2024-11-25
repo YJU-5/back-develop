@@ -1,9 +1,8 @@
 import { Column } from 'typeorm';
-import { IsString, IsOptional, IsEmpty } from 'class-validator';
+import { IsString, IsOptional } from 'class-validator';
 
 export class CreateBoardDto {
   @IsString()
-  @IsEmpty()
   title: string;
 
   @IsString()

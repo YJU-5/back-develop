@@ -42,6 +42,8 @@ export class BoardController {
   ): Promise<any> {
     // 이미지 배열이 될 uploadedUrls
     let uploadedUrls: string[] = [];
+    console.log('board Files', files);
+    console.log(CreateBoardDto);
     if (files) {
       // Promise.all의 역할 : 여러 비동기 작업을 동시 실행하고,
       // 모든 작업이 완료될 때 까지 기다린 다음 결과를 배열로 반환하는 역할

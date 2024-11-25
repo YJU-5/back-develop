@@ -51,7 +51,7 @@ export class S3Service {
   }
   // 기존 이미지 삭제
   async deleteFile(fileUrls: string[]): Promise<void> {
-    console.log('deleteFileurls',fileUrls);
+    console.log('deleteFileurls', fileUrls);
     const deletePromises = fileUrls.map(async (fileUrl) => {
       const fileName = fileUrl.split(`${this.bucketName}/`)[0]; // URL에서 파일명 추출// 이거 여러 파일이어도 가능한지 체크해보기
       const command = new DeleteObjectCommand({

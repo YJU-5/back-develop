@@ -95,6 +95,7 @@ export class LocalSemesterController {
         files.map((file) => this.s3Service.uploadFile(file)),
       );
     }
+    console.log('controller', updateLocalSemesterDto);
     return this.localSemesterService.update(
       id,
       updateLocalSemesterDto,

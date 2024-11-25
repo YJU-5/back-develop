@@ -57,16 +57,20 @@ export class BoardService {
     uploadedUrl: string[],
   ): Promise<Board> {
     const BoardPost = await this.boardRepository.findOneBy({ id });
-    const { existingImageUrls } = updateBoardDto;
+    let existingImageUrls = updateBoardDto.existingImageUrls;
+    if (typeof existingImageUrls === 'string') {
+      existingImageUrls = [existingImageUrls];
+    }
 
-    const deleteUrl = BoardPost.imageUrl.filter(
-      (imageUrl) => !existingImageUrls.includes(imageUrl),
-    );
+    if (existingImageUrls && existingImageUrls.length > 0) {
+      const deleteUrl = BoardPost.imageUrl.filter(
+        (imageUrl) => !existingImageUrls.includes(imageUrl),
+      );
+      await this.s3Service.deleteFile(deleteUrl);
+    }
+
     if (existingImageUrls && existingImageUrls.length > 0) {
       uploadedUrl = [...existingImageUrls, ...uploadedUrl];
-    }
-    if (deleteUrl) {
-      await this.s3Service.deleteFile(BoardPost.imageUrl);
     }
     await this.boardRepository.update(id, {
       title: updateBoardDto.title,
