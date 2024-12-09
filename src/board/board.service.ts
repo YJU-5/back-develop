@@ -24,8 +24,6 @@ export class BoardService {
     createBoardDto: CreateBoardDto,
     uploadedUrl: string[],
   ): Promise<Board> {
-    // create : 엔티티 인스턴스 생성, 객체를 생성 -> 메모리에 유지
-    // 그 후에 추가작업이 가능 EX) 데이터 변환, 유효성 검사
     const newBoardPost = this.boardRepository.create({
       title: createBoardDto.title,
       content: createBoardDto.content,

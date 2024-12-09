@@ -69,6 +69,8 @@ export class BoardController {
     @UploadedFiles() files: Array<Express.Multer.File>,
   ): Promise<any> {
     let uploadedUrls: string[] = [];
+    console.log(files);
+    console.log(updateBoardDto);
     if (files) {
       uploadedUrls = await Promise.all(
         files.map((file) => this.s3Service.uploadFile(file)),
