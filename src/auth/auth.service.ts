@@ -8,6 +8,7 @@ export class AuthService {
   //사용자의 비밀번호 검사
   async validateUser(
     password: string,
+    name: string,
     hashPassword: string,
     email: string,
     userId: string,
@@ -15,7 +16,7 @@ export class AuthService {
     const isMatch = await bcrypt.compare(password, hashPassword);
     if (isMatch) {
       // 토큰 생성로직 불러오기
-      const token = await this.createToken(email, userId);
+      const token = await this.createToken(email, userId, name);
       console.log(token);
       return token;
     } else {
@@ -23,8 +24,9 @@ export class AuthService {
     }
   }
   // 토큰 생성 로직
-  async createToken(email: string, userId: string) {// 토큰에 넣어줄 정보
-    const payload = { email: email, userId: userId };
+  async createToken(email: string, userId: string, name: string) {
+    // 토큰에 넣어줄 정보
+    const payload = { name: name, email: email, userId: userId };
     return this.jwtService.sign(payload); // jwt 발급
   }
 }

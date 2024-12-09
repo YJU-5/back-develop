@@ -63,6 +63,7 @@ export class UserService {
     if (findUser) {
       const token = await this.authService.validateUser(
         loginUserDto.password,
+        findUser.name,
         findUser.password,
         findUser.email,
         findUser.id,
