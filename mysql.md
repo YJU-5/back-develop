@@ -11,6 +11,12 @@ npm run typeorm migration:generate -- -d ./src/data-source.ts -p ./src/path-to-m
 마이그레이션 실행 
 npm run typeorm migration:run -- -d ./src/data-source.ts
 
+git bash에서 mysql 백업 
+mysqldump -u root -p project_5team > backup.sql
+
+백업 파일 적용 
+mysql -u root -p project_5team < backup.sql
+
 // migration 문제였던 것들
 - 마이그레이션은 엔티티를 고치면 그걸 바로 반영할 수 있게끔 query를 사용해서 조정해줌
   - 이미 엔티티와 같은값은 적용안함  

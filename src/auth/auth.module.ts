@@ -1,8 +1,10 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
+import { JwtStrategy } from './jwt.strategy';
+import { UserModule } from '../user/user.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -17,9 +19,10 @@ import { JwtModule } from '@nestjs/jwt';
       inject: [ConfigService],
     }),
     JwtModule,
+    forwardRef(() => UserModule),
   ],
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [AuthService, JwtStrategy],
   exports: [AuthService],
 })
 export class AuthModule {}

@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { LocalSemester } from '../../local-semester/entities/local-semester.entity';
 
 @Entity()
 export class User {
@@ -16,6 +17,9 @@ export class User {
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
+
+  @OneToMany(() => LocalSemester, (localSemester) => localSemester.user)
+  localSemester: LocalSemester[];
 
   @Column({
     type: 'timestamp',

@@ -17,7 +17,6 @@ export class AuthService {
     if (isMatch) {
       // 토큰 생성로직 불러오기
       const token = await this.createToken(email, userId, name);
-      console.log(token);
       return token;
     } else {
       throw new UnauthorizedException('비밀번호가 유효하지 않습니다');
@@ -28,5 +27,15 @@ export class AuthService {
     // 토큰에 넣어줄 정보
     const payload = { name: name, email: email, userId: userId };
     return this.jwtService.sign(payload); // jwt 발급
+  }
+
+  //토큰 인증
+  async validateToken(token: string) {
+    try {
+      const decoded = this.jwtService.verify(token);
+      return decoded;
+    } catch {
+      throw new UnauthorizedException('Invalid token');
+    }
   }
 }

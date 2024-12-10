@@ -13,11 +13,11 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       secretOrKey: 'NSMRSBYfb8',
     });
   }
-//   async validate(payload: any) {
-//     const user = this.usersService.findByUserId(payload.id);
-//     if (!user) {
-//       throw new UnauthorizedException('Invalid token or user not authorized');
-//     }
-//     return { userId: payload.id, email: payload.email };
-//   }
+  async validate(payload: any) {
+    const user = await this.usersService.findUserById(payload.id);
+    if (!user) {
+      throw new UnauthorizedException('Invalid token or user not authorized');
+    }
+    return { userId: user.id };
+  }
 }

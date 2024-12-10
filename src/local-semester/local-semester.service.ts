@@ -5,23 +5,30 @@ import { LocalSemester } from './entities/local-semester.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { S3Service } from '../s3/s3.service';
+import { UserService } from '../user/user.service';
+
 @Injectable()
 export class LocalSemesterService {
   constructor(
     @InjectRepository(LocalSemester)
     private readonly localRepository: Repository<LocalSemester>,
     private readonly s3Service: S3Service,
+    private readonly userService: UserService,
   ) {}
 
   // 현지학기 생성
   async create(
     createLocalSemesterDto: CreateLocalSemesterDto,
     uploadedUrl: string[],
+    userId: string,
   ): Promise<LocalSemester> {
+    // 되긴 함 그리고 참조하는거 따로 작성필요
+    const user = await this.userService.findUserById(userId);
     const newLocalSemester = this.localRepository.create({
       title: createLocalSemesterDto.title,
       content: createLocalSemesterDto.content,
       imageUrl: uploadedUrl,
+      user: user,
     });
     const saveLocalSemester = await this.localRepository.save(newLocalSemester);
     return saveLocalSemester;
@@ -29,7 +36,9 @@ export class LocalSemesterService {
 
   // 현지학기 스케줄 전부 가져오기
   async findAll(): Promise<LocalSemester[]> {
-    const LocalSemesterAllList = await this.localRepository.find();
+    const LocalSemesterAllList = await this.localRepository.find({
+      relations: ['user'],
+    });
     return LocalSemesterAllList;
   }
 
@@ -37,6 +46,7 @@ export class LocalSemesterService {
   async findOne(id: string): Promise<LocalSemester> {
     const LocalSemesterByIdList = await this.localRepository.findOne({
       where: { id },
+      relations: ['user'],
     });
     return LocalSemesterByIdList;
   }
