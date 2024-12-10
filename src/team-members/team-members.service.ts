@@ -15,27 +15,13 @@ export class TeamMembersService {
     private readonly s3Service: S3Service,
   ) {}
 
-  async create(
-    createTeamMemberDto: CreateTeamMemberDto,
-    uploadedUrl: string[],
-  ): Promise<TeamMember> {
-    const newTeamMember = this.teamRepository.create({
-      title: createTeamMemberDto.title,
-      content: createTeamMemberDto.content,
-      age : createTeamMemberDto.age,
-      major: createTeamMemberDto.major,
-      imageUrl: uploadedUrl,
-    });
-    const saveTeamMember = await this.teamRepository.save(newTeamMember);
-    return saveTeamMember;
-  }
-
+  // Get All 팀 멤버
   async findAll(): Promise<TeamMember[]> {
     const TeamMembersAllList = await this.teamRepository.find();
     return TeamMembersAllList;
   }
 
-  // ID로 팀 멤버 불러오기
+  // ID로 상세가져오기
   async findOne(id: string): Promise<TeamMember> {
     const TeamMemberByIdList = await this.teamRepository.findOne({
       where: { id },
@@ -43,6 +29,25 @@ export class TeamMembersService {
     return TeamMemberByIdList;
   }
 
+  // Create 팀 멤버
+  async create(
+    createTeamMemberDto: CreateTeamMemberDto,
+    uploadedUrl: string[],
+  ): Promise<TeamMember> {
+    // 저장해줄 객체 생성
+    const newTeamMember = this.teamRepository.create({
+      title: createTeamMemberDto.title,
+      content: createTeamMemberDto.content,
+      age : createTeamMemberDto.age,
+      major: createTeamMemberDto.major,
+      imageUrl: uploadedUrl,
+    });
+    // 실제 저장
+    const saveTeamMember = await this.teamRepository.save(newTeamMember);
+    return saveTeamMember;
+  }
+
+  // Update 팀 멤버
   async update(id: string, updateTeamMemberDto: UpdateTeamMemberDto, uploadedUrl:string[],): Promise<TeamMember> {
     const TeamMember = await this.teamRepository.findOneBy({id})
     await this.s3Service.deleteFile(TeamMember.imageUrl)
@@ -57,7 +62,7 @@ export class TeamMembersService {
     return UpdatedTeamMember;
   }
 
-  // 삭제 
+  // Delete 팀 멤버
   async remove(id: string): Promise<void> {
     const TeamMember = await this.teamRepository.findOneBy({id})
     await this.s3Service.deleteFile(TeamMember.imageUrl);

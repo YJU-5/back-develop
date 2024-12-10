@@ -26,60 +26,8 @@ export class BoardController {
     private readonly s3Service: S3Service,
   ) {}
 
-  // 게시글 생성
-  @ApiOperationDecorator(
-    '게시판 Post',
-    '# 게시판 Post',
-    201,
-    '성공적으로 게시판 Post',
-  )
-  // 게시글 생성 및 이미지 업로드
-  @Post('')
-  @ApiFile()
-  async uploadFile(
-    @Body() CreateBoardDto: CreateBoardDto,
-    @UploadedFiles() files: Array<Express.Multer.File>,
-  ): Promise<any> {
-    // 이미지 배열이 될 uploadedUrls
-    let uploadedUrls: string[] = [];
-    console.log('board Files', files);
-    console.log(CreateBoardDto);
-    if (files) {
-      // Promise.all의 역할 : 여러 비동기 작업을 동시 실행하고,
-      // 모든 작업이 완료될 때 까지 기다린 다음 결과를 배열로 반환하는 역할
-      uploadedUrls = await Promise.all(
-        files.map((file) => this.s3Service.uploadFile(file)),
-      );
-    }
-    return this.boardService.create(CreateBoardDto, uploadedUrls);
-  }
-
-  // 업데이트
-  @ApiOperationDecorator(
-    '게시판 Update',
-    '# 게시판 Update',
-    200,
-    '성공적으로 게시판 Update',
-  )
-  @Patch(':id')
-  @ApiFile()
-  async update(
-    @Param('id') id: string,
-    @Body() updateBoardDto: UpdateBoardDto,
-    @UploadedFiles() files: Array<Express.Multer.File>,
-  ): Promise<any> {
-    let uploadedUrls: string[] = [];
-    console.log(files);
-    console.log(updateBoardDto);
-    if (files) {
-      uploadedUrls = await Promise.all(
-        files.map((file) => this.s3Service.uploadFile(file)),
-      );
-    }
-    return this.boardService.update(id, updateBoardDto, uploadedUrls);
-  }
-
-  // 페이지네이션 GET
+  // Get All Pagination 게시판
+  // Get All Pagination Swagger 게시판 문서화
   @ApiOperationDecorator(
     '게시판 페이지네이션',
     '# 게시판 페이지네이션',
@@ -91,15 +39,16 @@ export class BoardController {
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number = 10,
   ): Promise<Pagination<Board>> {
-    limit = limit > 100 ? 100 : limit;
+    limit = limit > 100 ? 100 : limit; // 한 번에 불러올 수 있는 limit 제한
     return this.boardService.paginate({
       page,
       limit,
-      route: 'localhost:3001/board',
+      route: '',
     });
   }
 
-  // 게시글 가져오기 By Id
+  // Get By Id 게시판
+  // Get By Id Swagger 게시판 문서화
   @ApiOperationDecorator(
     '게시판 Get by ID',
     '# 게시판 Get by ID',
@@ -111,7 +60,56 @@ export class BoardController {
     return this.boardService.findOne(id);
   }
 
-  // 삭제
+  // Create 게시판
+  // Create Swagger 문서화
+  @ApiOperationDecorator(
+    '게시판 Post',
+    '# 게시판 Post',
+    201,
+    '성공적으로 게시판 Post',
+  )
+  @ApiFile()
+  @Post('')
+  async uploadFile(
+    @Body() CreateBoardDto: CreateBoardDto,
+    @UploadedFiles() files: Array<Express.Multer.File>,
+  ): Promise<any> {
+    let uploadedUrls: string[] = [];
+    if (files) {
+      // Promise.all 비동기 작업을 동시에 병렬로 처리
+      uploadedUrls = await Promise.all(
+        files.map((file) => this.s3Service.uploadFile(file)),
+      );
+    }
+    return this.boardService.create(CreateBoardDto, uploadedUrls);
+  }
+
+  // Update 게시판
+  // Update 게시판 Swagger 문서화
+  @ApiOperationDecorator(
+    '게시판 Update',
+    '# 게시판 Update',
+    200,
+    '성공적으로 게시판 Update',
+  )
+  @ApiFile()
+  @Patch(':id')
+  async update(
+    @Param('id') id: string,
+    @Body() updateBoardDto: UpdateBoardDto,
+    @UploadedFiles() files: Array<Express.Multer.File>,
+  ): Promise<any> {
+    let uploadedUrls: string[] = [];
+    if (files) {
+      uploadedUrls = await Promise.all(
+        files.map((file) => this.s3Service.uploadFile(file)),
+      );
+    }
+    return this.boardService.update(id, updateBoardDto, uploadedUrls);
+  }
+
+  //Delete 게시판
+  //Delete Swagger 문서화
   @ApiOperationDecorator(
     '게시판 Delete',
     '# 게시판 Delete',

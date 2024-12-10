@@ -23,7 +23,34 @@ export class TeamMembersController {
     private readonly s3Service: S3Service,
   ) {}
 
-  // team-members 생성
+  // Get All 팀 멤버
+  // Get All Swagger 팀 멤버 문서화
+  @ApiOperationDecorator(
+    '조원소개 Get All',
+    '# 조원소개 Get All',
+    200,
+    '성공적으로 조원소개 Get All',
+  )
+  @Get()
+  findAll(): Promise<TeamMember[]> {
+    return this.teamMembersService.findAll();
+  }
+
+  // Get By Id 팀 멤버
+  // Get By Id Swagger 팀 멤버 문서화
+  @ApiOperationDecorator(
+    '조원소개 Get by ID',
+    '# 조원소개 Get by ID',
+    200,
+    '성공적으로 조원소개 Get by ID',
+  )
+  @Get(':id')
+  findOne(@Param('id') id: string): Promise<TeamMember> {
+    return this.teamMembersService.findOne(id);
+  }
+
+  // Create 팀 멤버
+  // Create Swagger 문서화
   @ApiOperationDecorator(
     '조원소개 Create',
     '# 조원소개 Create',
@@ -31,8 +58,8 @@ export class TeamMembersController {
     '성공적으로 조원소개 Create',
   )
   // team-members 생성 및 이미지 업로드
-  @Post()
   @ApiFileTeam()
+  @Post()
   async create(
     @Body() createTeamMemberDto: CreateTeamMemberDto,
     @UploadedFiles() files: Array<Express.Multer.File>,
@@ -46,39 +73,16 @@ export class TeamMembersController {
     return this.teamMembersService.create(createTeamMemberDto, uploadedUrls);
   }
 
-  // 모든 team-members 가져오기
-  @ApiOperationDecorator(
-    '조원소개 Get All',
-    '# 조원소개 Get All',
-    200,
-    '성공적으로 조원소개 Get All',
-  )
-  @Get()
-  findAll(): Promise<TeamMember[]> {
-    return this.teamMembersService.findAll();
-  }
-
-  // 팀 멤버 가져오기 By Id
-  @ApiOperationDecorator(
-    '조원소개 Get by ID',
-    '# 조원소개 Get by ID',
-    200,
-    '성공적으로 조원소개 Get by ID',
-  )
-  @Get(':id')
-  findOne(@Param('id') id: string): Promise<TeamMember> {
-    return this.teamMembersService.findOne(id);
-  }
-
-  // 팀 멤버 업데이트
+  // Update 팀 멤버
+  // Update 팀 멤버 Swagger 문서화
   @ApiOperationDecorator(
     '조원소개 Update',
     '# 조원소개 Update',
     200,
     '성공적으로 조원소개 Update',
   )
-  @Patch(':id')
   @ApiFileTeam()
+  @Patch(':id')
   async update(
     @Param('id') id: string,
     @Body() updateTeamMemberDto: UpdateTeamMemberDto,
@@ -90,7 +94,6 @@ export class TeamMembersController {
         files.map((file) => this.s3Service.uploadFile(file)),
       );
     }
-    // return this.boardService.update(id, updateBoardDto, uploadedUrls);
     return this.teamMembersService.update(
       id,
       updateTeamMemberDto,
@@ -98,6 +101,8 @@ export class TeamMembersController {
     );
   }
 
+  //Delete 팀 멤버
+  //Delete Swagger 문서화
   @ApiOperationDecorator(
     '조원소개 Delete',
     '# 조원소개 Delete',

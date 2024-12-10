@@ -5,7 +5,7 @@ import { JwtService } from '@nestjs/jwt';
 export class AuthService {
   constructor(private readonly jwtService: JwtService) {}
 
-  //사용자의 비밀번호 검사
+  //로그인 비밀번호 검사
   async validateUser(
     password: string,
     name: string,
@@ -13,6 +13,7 @@ export class AuthService {
     email: string,
     userId: string,
   ) {
+    // 비밀번호 매치하는지 검사
     const isMatch = await bcrypt.compare(password, hashPassword);
     if (isMatch) {
       // 토큰 생성로직 불러오기

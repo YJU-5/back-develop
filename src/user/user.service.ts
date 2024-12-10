@@ -1,6 +1,5 @@
 import {
   ConflictException,
-  Inject,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -60,23 +59,18 @@ export class UserService {
 
   async login(loginUserDto: LoginUserDto) {
     const findUser = await this.findUserByEmail(loginUserDto.email);
-    if (findUser) {
-      const token = await this.authService.validateUser(
-        loginUserDto.password,
-        findUser.name,
-        findUser.password,
-        findUser.email,
-        findUser.id,
-      );
-      return { access_token: token };
-    } else {
+    if (!findUser) {
       throw new UnauthorizedException('해당 이메일로된 유저가 없습니다');
     }
+    const token = await this.authService.validateUser(
+      loginUserDto.password,
+      findUser.name,
+      findUser.password,
+      findUser.email,
+      findUser.id,
+    );
+    return { access_token: token };
   }
-
-  // findAll() {
-  //   return `This action returns all user`;
-  // }
 
   // 이메일로 유저찾기 기능
   async findUserByEmail(userEmail: string) {
@@ -93,12 +87,4 @@ export class UserService {
     });
     return findUser;
   }
-
-  // update(id: number, updateUserDto: UpdateUserDto) {
-  //   return `This action updates a #${id} user`;
-  // }
-
-  // remove(id: number) {
-  //   return `This action removes a #${id} user`;
-  // }
 }

@@ -13,6 +13,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       secretOrKey: 'NSMRSBYfb8',
     });
   }
+  // 인증 시도
   async validate(payload: any) {
     const user = await this.usersService.findUserById(payload.id);
     if (!user) {

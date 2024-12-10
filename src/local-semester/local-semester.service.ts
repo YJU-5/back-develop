@@ -6,6 +6,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { S3Service } from '../s3/s3.service';
 import { UserService } from '../user/user.service';
+import { NotFoundException } from '@nestjs/common';
 
 @Injectable()
 export class LocalSemesterService {
@@ -16,41 +17,48 @@ export class LocalSemesterService {
     private readonly userService: UserService,
   ) {}
 
-  // 현지학기 생성
-  async create(
-    createLocalSemesterDto: CreateLocalSemesterDto,
-    uploadedUrl: string[],
-    userId: string,
-  ): Promise<LocalSemester> {
-    // 되긴 함 그리고 참조하는거 따로 작성필요
-    const user = await this.userService.findUserById(userId);
-    const newLocalSemester = this.localRepository.create({
-      title: createLocalSemesterDto.title,
-      content: createLocalSemesterDto.content,
-      imageUrl: uploadedUrl,
-      user: user,
-    });
-    const saveLocalSemester = await this.localRepository.save(newLocalSemester);
-    return saveLocalSemester;
-  }
-
-  // 현지학기 스케줄 전부 가져오기
+  // Get All 현지학기
   async findAll(): Promise<LocalSemester[]> {
     const LocalSemesterAllList = await this.localRepository.find({
-      relations: ['user'],
+      relations: ['user'], // 현지학기 게시물 생성한 유저항목 불러오기
     });
+    if (!LocalSemesterAllList || LocalSemesterAllList.length === 0) {
+      throw new NotFoundException('No LocalSemester records found');
+    }
     return LocalSemesterAllList;
   }
 
-  // ID로 스케줄 불러오기
+  // ID로 상세가져오기
   async findOne(id: string): Promise<LocalSemester> {
     const LocalSemesterByIdList = await this.localRepository.findOne({
       where: { id },
-      relations: ['user'],
+      relations: ['user'], //유저참조
     });
+    if (!LocalSemesterByIdList) {
+      throw new NotFoundException('No LocalSemester records found');
+    }
     return LocalSemesterByIdList;
   }
 
+  // Create 현지학기
+  async create(
+    createLocalSemesterDto: CreateLocalSemesterDto,
+    uploadedUrl: string[],
+    userId: string, // 토큰에서 추출한 userId
+  ): Promise<LocalSemester> {
+    const user = await this.userService.findUserById(userId); // 유저 서비스에서 유저 찾기
+    // 저장해줄 객체 생성
+    const newLocalSemester = this.localRepository.create({
+      title: createLocalSemesterDto.title,
+      content: createLocalSemesterDto.content,
+      imageUrl: uploadedUrl, //파일 URL삽입
+      user: user, // 현재 로그인한 userId 추출하여 삽입
+    });
+    const saveLocalSemester = await this.localRepository.save(newLocalSemester); // 생성된 객체를 실제로 저장
+    return saveLocalSemester; //저장된 정보 반환
+  }
+
+  // Update 현지학기
   async update(
     id: string,
     updateLocalSemesterDto: UpdateLocalSemesterDto,
@@ -58,21 +66,23 @@ export class LocalSemesterService {
   ): Promise<any> {
     // 기존 DB에 있는 aws URL과 비교하기 위해 정보를 가져온다
     const LocalSemester = await this.localRepository.findOneBy({ id });
-    let existingImageUrls = updateLocalSemesterDto.existingImageUrls;
+    let existingImageUrls = updateLocalSemesterDto.existingImageUrls; // 프론트에서 원래있던 이미지URL
+    // existingImageUrls이 string 일시에 배열로 변환
     if (typeof existingImageUrls === 'string') {
       existingImageUrls = [existingImageUrls];
     }
-    // DB에 있는 aws URL과 현재 Body로 받은 aws URL정보 중 없는 URL이 있다면 그 URL만 추출한다
+    // existingImageUrls 배열에 현재 imageUrl(DB에 있는 이미지URL)이 포함되어 있는지를 확인
+    // 포함되지 않았다면 프론트에서 지웠다는 의미로 삭제할 deleteUrl에 넣어준다
     if (existingImageUrls && existingImageUrls.length > 0) {
+      uploadedUrl = [...existingImageUrls, ...uploadedUrl]; // 이미 존재하는 URL, 새로 aws에 게시된 url을 합친다
+      // 삭제할 이미지 URL
       const deleteUrl = LocalSemester.imageUrl.filter(
         (imageUrl) => !existingImageUrls.includes(imageUrl),
       );
       await this.s3Service.deleteFile(deleteUrl);
     }
-    if (existingImageUrls && existingImageUrls.length > 0) {
-      // existingImageUrls 이게 한글자씩 들어가게됨
-      uploadedUrl = [...existingImageUrls, ...uploadedUrl]; //이미 존재하는 URL, 새로 aws에 게시된 url을 합친다
-    }
+
+    // 업데이트 실행
     await this.localRepository.update(id, {
       title: updateLocalSemesterDto.title,
       content: updateLocalSemesterDto.content,
@@ -82,6 +92,7 @@ export class LocalSemesterService {
     return LocalSemesterUpdated;
   }
 
+  // Delete 현지학기
   async remove(id: string): Promise<void> {
     const LocalSemester = await this.localRepository.findOneBy({ id });
     await this.s3Service.deleteFile(LocalSemester.imageUrl);

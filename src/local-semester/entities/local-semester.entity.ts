@@ -18,6 +18,8 @@ export class LocalSemester {
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
 
+  // user의 localSemester에 localSemester의 아이디들이 들어감(배열로 복수가)
+  // localSemester의 user에 작성한 유저의 아이디가 들어감 (단수가)
   @ManyToOne(() => User, (user) => user.localSemester)
   user: User;
 

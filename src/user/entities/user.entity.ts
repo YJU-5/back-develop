@@ -18,7 +18,9 @@ export class User {
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
 
-  @OneToMany(() => LocalSemester, (localSemester) => localSemester.user)
+  @OneToMany(() => LocalSemester, (localSemester) => localSemester.user, {
+    cascade: true,
+  })
   localSemester: LocalSemester[];
 
   @Column({

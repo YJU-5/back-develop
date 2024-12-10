@@ -14,7 +14,7 @@ export class CommentService {
     private readonly boardService: BoardService,
   ) {}
 
-  // 댓글 생성
+  //Create 댓글
   async create(postId: string, createCommentDto: CreateCommentDto) {
     const board = await this.boardService.findBoardById(postId);
     const newComment = this.commentRepository.create({
@@ -25,16 +25,7 @@ export class CommentService {
     return saveNewComment;
   }
 
-  async findAll() {
-    const CommentList = await this.commentRepository.find();
-    return CommentList;
-  }
-
-  // async findOne(id: string) {
-  //   const CommentByIdList = await this.commentRepository.findOneById(id);
-  //   return CommentByIdList;
-  // }
-
+  //Update 댓글
   async update(id: string, updateCommentDto: UpdateCommentDto) {
     await this.commentRepository.update(id, {
       content: updateCommentDto.content,
@@ -43,7 +34,9 @@ export class CommentService {
     return updatedComment;
   }
 
-  remove(id: string) {
-    return `This action removes a #${id} comment`;
+  //Delete 댓글
+  async remove(id: string) {
+    const deletedComment = await this.commentRepository.delete(id);
+    return deletedComment;
   }
 }
