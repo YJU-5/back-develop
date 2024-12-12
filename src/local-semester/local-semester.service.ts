@@ -66,6 +66,7 @@ export class LocalSemesterService {
   ): Promise<any> {
     // 기존 DB에 있는 aws URL과 비교하기 위해 정보를 가져온다
     const LocalSemester = await this.localRepository.findOneBy({ id });
+    const LocalSemesterImageUrl = LocalSemester.imageUrl;
     let existingImageUrls = updateLocalSemesterDto.existingImageUrls; // 프론트에서 원래있던 이미지URL
     // existingImageUrls이 string 일시에 배열로 변환
     if (typeof existingImageUrls === 'string') {
@@ -76,12 +77,15 @@ export class LocalSemesterService {
     if (existingImageUrls && existingImageUrls.length > 0) {
       uploadedUrl = [...existingImageUrls, ...uploadedUrl]; // 이미 존재하는 URL, 새로 aws에 게시된 url을 합친다
       // 삭제할 이미지 URL
-      const deleteUrl = LocalSemester.imageUrl.filter(
+      const deleteUrl = LocalSemesterImageUrl.filter(
         (imageUrl) => !existingImageUrls.includes(imageUrl),
       );
       await this.s3Service.deleteFile(deleteUrl);
+      // existingImageUrls가 완전 비었을 경우
+    } else if (!existingImageUrls && LocalSemesterImageUrl.length > 0) {
+      const deleteUrl = LocalSemesterImageUrl;
+      await this.s3Service.deleteFile(deleteUrl);
     }
-
     // 업데이트 실행
     await this.localRepository.update(id, {
       title: updateLocalSemesterDto.title,

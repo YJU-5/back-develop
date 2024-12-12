@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 import * as dotenv from 'dotenv';
+import { HttpExceptionFilter } from './filter/HttpExceptionFilter';
 dotenv.config(); // .env 파일을 로드하여 환경 변수 사용 가능하게 만듦
 
 async function bootstrap() {
@@ -27,6 +28,9 @@ async function bootstrap() {
 
   //Cors
   app.enableCors();
+
+  //예외 필터 전역적용
+  app.useGlobalFilters(new HttpExceptionFilter());
 
   // 파이프
   app.useGlobalPipes(

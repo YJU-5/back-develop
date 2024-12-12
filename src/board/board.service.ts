@@ -34,7 +34,7 @@ export class BoardService {
       relations: ['comments'], // 댓글참조
     });
     if (!BoardPostByIdList) {
-      throw new NotFoundException('No LocalSemester records found');
+      throw new NotFoundException('No Board records found');
     }
     return BoardPostByIdList;
   }
@@ -63,6 +63,7 @@ export class BoardService {
   ): Promise<Board> {
     // 기존 DB에 있는 aws URL과 비교하기 위해 정보를 가져온다
     const BoardPost = await this.boardRepository.findOneBy({ id });
+    const BoardPostImageUrl = BoardPost.imageUrl;
     let existingImageUrls = updateBoardDto.existingImageUrls;
     // existingImageUrls이 string 일시에 배열로 변환
     if (typeof existingImageUrls === 'string') {
@@ -71,14 +72,16 @@ export class BoardService {
     // existingImageUrls 배열에 현재 imageUrl(DB에 있는 이미지URL)이 포함되어 있는지를 확인
     // 포함되지 않았다면 프론트에서 지웠다는 의미로 삭제할 deleteUrl에 넣어준다
     if (existingImageUrls && existingImageUrls.length > 0) {
-      uploadedUrl = [...existingImageUrls, ...uploadedUrl];
+      uploadedUrl = [...existingImageUrls, ...uploadedUrl]; // 합친놈
       // 삭제할 이미지 URL
-      const deleteUrl = BoardPost.imageUrl.filter(
+      const deleteUrl = BoardPostImageUrl.filter(
         (imageUrl) => !existingImageUrls.includes(imageUrl),
       );
       await this.s3Service.deleteFile(deleteUrl);
+    } else if (!existingImageUrls && BoardPostImageUrl.length > 0) {
+      const deleteUrl = BoardPostImageUrl;
+      await this.s3Service.deleteFile(deleteUrl);
     }
-
     // 업데이트 실행
     await this.boardRepository.update(id, {
       title: updateBoardDto.title,

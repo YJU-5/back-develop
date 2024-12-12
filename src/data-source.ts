@@ -1,10 +1,5 @@
 import 'reflect-metadata';
 import { DataSource } from 'typeorm';
-import { User } from './user/entities/user.entity';
-import { Board } from './board/entities/board.entity';
-import { Comment } from './comment/entities/comment.entity';
-import { TeamMember } from './team-members/entities/team-member.entity';
-import { LocalSemester } from './local-semester/entities/local-semester.entity';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
@@ -18,9 +13,11 @@ export const AppDataSource = new DataSource({
   database: process.env.DB_NAME,
   synchronize: false,
   logging: false,
-  entities: [TeamMember, LocalSemester, Board, Comment, User],
+  // 파일 절대경로, 하위 모든폴더 탐색, .entity로 끝나고 확장자가.ts or .js
+  entities: [__dirname + '/**/*.entity{.ts,.js}'], //DB 경로 전부
   migrations: [__dirname + '/path-to-migrations-dir/*.ts'],
   subscribers: [],
+  migrationsTableName: 'migrations',
 });
 
 AppDataSource.initialize()

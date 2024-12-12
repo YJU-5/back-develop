@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { TeamMembersModule } from './team-members/team-members.module';
@@ -9,6 +9,13 @@ import { UserModule } from './user/user.module';
 import { CommentModule } from './comment/comment.module';
 import { S3Module } from './s3/s3.module';
 import { AppDataSource } from './data-source';
+import { LoggerMiddleware } from './middleware/logger.middleware';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+import { TeamMembersController } from './team-members/team-members.controller';
+// import { APP_FILTER } from '@nestjs/core';
+// import { HttpExceptionFilter } from './filter/HttpExceptionFilter';
+// import { ExceptionModule } from './exception.module';
 
 @Module({
   imports: [
@@ -24,7 +31,11 @@ import { AppDataSource } from './data-source';
     CommentModule,
     S3Module,
   ],
-  controllers: [],
-  providers: [],
+  controllers: [AppController],
+  providers: [AppService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer): any {
+    consumer.apply(LoggerMiddleware).forRoutes(TeamMembersController);
+  }
+}

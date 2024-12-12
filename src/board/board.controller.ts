@@ -43,7 +43,6 @@ export class BoardController {
     return this.boardService.paginate({
       page,
       limit,
-      route: '',
     });
   }
 

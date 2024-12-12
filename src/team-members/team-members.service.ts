@@ -48,9 +48,18 @@ export class TeamMembersService {
   }
 
   // Update 팀 멤버
+  // 사진 삭제하는거 따로 있는지 물어보기 
+  // 새로 넣으면 기존의 사진은 어떻게 되지? 
   async update(id: string, updateTeamMemberDto: UpdateTeamMemberDto, uploadedUrl:string[],): Promise<TeamMember> {
     const TeamMember = await this.teamRepository.findOneBy({id})
-    await this.s3Service.deleteFile(TeamMember.imageUrl)
+    const TeamMemberImageUrl = TeamMember.imageUrl;
+    const existingImageUrl = updateTeamMemberDto.imageUrl
+    console.log(TeamMemberImageUrl);
+    console.log(existingImageUrl);
+    // 프론트에서 기존 URL 형식, DB에서 기존 URL 형식
+    if(existingImageUrl !== TeamMemberImageUrl){
+      await this.s3Service.deleteFile(TeamMemberImageUrl)
+    }
     await this.teamRepository.update(id,{
       title: updateTeamMemberDto.title,
       content:updateTeamMemberDto.content,

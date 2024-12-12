@@ -22,5 +22,5 @@ export class CreateTeamMemberDto {
 
   @IsOptional()
   @Column({ type: 'simple-array', nullable: true })
-  file: string[];
+  imageUrl: string[];
 }
