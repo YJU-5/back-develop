@@ -25,9 +25,6 @@ export class LocalSemesterService {
         createdAt: 'DESC',
       },
     });
-    if (!LocalSemesterAllList || LocalSemesterAllList.length === 0) {
-      throw new NotFoundException('No LocalSemester records found');
-    }
     return LocalSemesterAllList;
   }
 
