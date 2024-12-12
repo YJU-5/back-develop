@@ -21,6 +21,9 @@ export class LocalSemesterService {
   async findAll(): Promise<LocalSemester[]> {
     const LocalSemesterAllList = await this.localRepository.find({
       relations: ['user'], // 현지학기 게시물 생성한 유저항목 불러오기
+      order: {
+        createdAt: 'DESC',
+      },
     });
     if (!LocalSemesterAllList || LocalSemesterAllList.length === 0) {
       throw new NotFoundException('No LocalSemester records found');
