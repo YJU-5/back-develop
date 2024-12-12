@@ -15,7 +15,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
   // 인증 시도
   async validate(payload: any) {
-    const user = await this.usersService.findUserById(payload.id);
+    const user = await this.usersService.findUserById(payload.userId);
     if (!user) {
       throw new UnauthorizedException('Invalid token or user not authorized');
     }
