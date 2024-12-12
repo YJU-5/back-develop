@@ -24,7 +24,9 @@ export class BoardService {
   // Get All Pagination 게시판
   async paginate(options: IPaginationOptions): Promise<Pagination<Board>> {
     // options : 컨트롤러에서 받아온 page, limit
-    return paginate<Board>(this.boardRepository, options); // 페이지네이트
+    return paginate<Board>(this.boardRepository, options, {
+      order: { updatedAt: 'DESC' },
+    }); // 페이지네이트
   }
 
   // Get By Id 게시판
