@@ -53,12 +53,24 @@ export class TeamMembersService {
   async update(id: string, updateTeamMemberDto: UpdateTeamMemberDto, uploadedUrl:string[],): Promise<TeamMember> {
     const TeamMember = await this.teamRepository.findOneBy({id})
     const TeamMemberImageUrl = TeamMember.imageUrl;
-    const existingImageUrl = updateTeamMemberDto.imageUrl
-    console.log(TeamMemberImageUrl);
-    console.log(existingImageUrl);
+    let existingImageUrl = updateTeamMemberDto.imageUrl
+    console.log('TeamMemberImageUrl',TeamMemberImageUrl);
+    console.log('existingImageUrl',existingImageUrl);
+    console.log('uploadedUrl',uploadedUrl);
     // 프론트에서 기존 URL 형식, DB에서 기존 URL 형식
-    if(existingImageUrl !== TeamMemberImageUrl){
-      await this.s3Service.deleteFile(TeamMemberImageUrl)
+    // ex 이 있으면 
+    // if(existingImageUrl !== TeamMemberImageUrl){
+    //   await this.s3Service.deleteFile(TeamMemberImageUrl)
+    // }
+    if (typeof existingImageUrl === 'string') {
+      existingImageUrl = [existingImageUrl];
+    }
+    if(existingImageUrl && existingImageUrl.length > 0 ){
+      uploadedUrl = [...existingImageUrl, ...uploadedUrl]
+      const deleteUrl = TeamMemberImageUrl.filter(
+        (imageUrl)=> ! existingImageUrl.includes(imageUrl)
+      )
+      await this.s3Service.deleteFile(deleteUrl)
     }
     await this.teamRepository.update(id,{
       title: updateTeamMemberDto.title,
