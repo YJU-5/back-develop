@@ -67,6 +67,8 @@ export class BoardService {
     const BoardPost = await this.boardRepository.findOneBy({ id });
     const BoardPostImageUrl = BoardPost.imageUrl;
     let existingImageUrls = updateBoardDto.existingImageUrls;
+    console.log(existingImageUrls);
+    console.log(BoardPostImageUrl);
     // existingImageUrls이 string 일시에 배열로 변환
     if (typeof existingImageUrls === 'string') {
       existingImageUrls = [existingImageUrls];
